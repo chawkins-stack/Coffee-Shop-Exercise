@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from models.ingredients import Ingredient
 
 @dataclass
 class Drink:
