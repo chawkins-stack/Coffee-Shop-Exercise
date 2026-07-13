@@ -1,118 +1,66 @@
 # Coffee Shop Exercise — Python Small Group Project (Express‑O)
 
-A small-group Python project simulating a simple drink‑management system for a coffee shop.  
-This application demonstrates clean architecture principles using:
+This repository is a small Python exercise that models a coffee shop domain using object-oriented programming. It is organized around domain models, repositories, services, and custom exceptions to demonstrate a layered design.
 
-- Repository pattern  
-- Service layer  
-- Custom exceptions  
-- Domain models  
-- In‑memory data storage  
+## What the project covers
 
-It is designed for educational purposes and follows the structure outlined in the project’s Google Doc.
+The project includes concepts for:
 
-## Project Structure
+- customers and customer records
+- drinks with ingredients and pricing
+- baked goods with vendor and allergen details
+- purchases that group items into an order
+- simple in-memory storage with repository-style classes
 
-```
+## Project structure
+
+```text
 Coffee-Shop-Exercise/
-│
 ├── models/
-│   └── drink.py              # Drink domain model
-│
+│   ├── customer.py
+│   ├── drink.py
+│   ├── baked_good.py
+│   ├── purchase.py
+│   └── ingredients.py
 ├── repositories/
-│   └── drink_repository.py   # In‑memory CRUD repository
-│
+│   ├── customer_repository.py
+│   ├── drink_repository.py
+│   ├── ingredients_repository.py
+│   ├── baked_good.py
+│   └── purchase.py
 ├── services/
-│   └── drink_service.py      # Business logic + validation
-│
-├── exceptions.py             # Custom exception classes
-│
-└── main.py                   # (Optional) Entry point for testing
+│   ├── customer_service.py
+│   ├── drink_service.py
+│   ├── ingredients_services.py
+│   ├── baked_good_service.py
+│   └── purchase_service.py
+├── exceptions.py
+└── README.md
 ```
 
----
+## Core domain models
 
-## Components Overview
+- Customer: stores an ID, name, email, and lifetime spending information
+- Drink: represents a drink with ingredients, production cost, markup, and sale price
+- Baked_good: represents a baked item with purchasing cost, markup, vendor, allergens, and sale price
+- Purchase: tracks a purchase with a timestamp, items, total cost, and customer
+- Ingredient: models the ingredient used in drinks
 
-### **Drink Model**
-Represents a drink in the system.  
-Typical fields include:
+## Repositories and services
 
-- `name`
-- `size`
-- `price`
-- `ingredients`
+The repository layer provides in-memory storage and basic CRUD-style operations such as add, lookup, update, and delete. The service layer builds on top of that by adding business rules and error handling.
 
----
+## Exceptions
 
-### **DrinkRepository**
-Handles **low‑level data operations** using an in‑memory list.
+The project includes custom exceptions for common situations such as:
 
-Supported operations:
+- DuplicateDrinkError
+- DrinkNotFoundError
+- CustomerNotFoundError
 
-- `get_all()` — return all drinks  
-- `get_by_id(name)` — lookup by drink name  
-- `add(drink)` — insert new drink  
-- `update(name, drink)` — replace existing drink  
-- `delete(name)` — remove drink  
+## Getting started
 
-This class contains **no business logic** — only raw data manipulation.
-
----
-
-### **DrinkService**
-Implements **business rules**, including:
-
-- Preventing duplicate drinks  
-- Validating existence before update/delete  
-- Raising custom exceptions  
-- Delegating storage to the repository  
-
-Supported service methods:
-
-- `create_drink(drink)`
-- `get_all_drinks()`
-- `get_drink(name)`
-- `update_drink(name, updated)`
-- `delete_drink(name)`
-
----
-
-### **Custom Exceptions**
-Located in `exceptions.py`:
-
-```python
-class DuplicateDrinkError(Exception):
-    def __init__(self, name: str):
-        super().__init__(f"Drink '{name}' already exists.")
-
-class DrinkNotFoundError(Exception):
-    def __init__(self, name: str):
-        super().__init__(f"Drink '{name}' was not found.")
-```
-
-These ensure clean error handling and readable API responses.
-
----
-
-## Getting Started
-
-### **1. Clone the repository**
-
-```bash
-git clone https://github.com/chawkins-stack/Coffee-Shop-Excercise
-cd Coffee-Shop-Excercise
-```
-
-### **2. Run the project**
-
-If you have a `main.py`:
-
-```bash
-python main.py
-```
-
-Or run your own tests/interactions in a Python shell:
+You can explore the project directly from Python by importing the models, repositories, and services:
 
 ```python
 from models.drink import Drink
@@ -122,51 +70,19 @@ from services.drink_service import DrinkService
 repo = DrinkRepository()
 service = DrinkService(repo)
 
-service.create_drink(Drink(name="Latte", size="Medium", price=4.50))
+drink = Drink(
+    id=1,
+    name="Latte",
+    ingredients=[],
+    cost_to_produce=2.0,
+    markup_percentage=0.5,
+    sale_price=3.0,
+)
+
+service.create_drink(drink)
 print(service.get_all_drinks())
 ```
 
----
-
-## Testing
-
-You can test the system by:
-
-- Creating drinks  
-- Attempting duplicates  
-- Updating existing drinks  
-- Deleting drinks  
-- Triggering exceptions intentionally  
-
-Example:
-
-```python
-try:
-    service.create_drink(Drink("Latte"))
-    service.create_drink(Drink("Latte"))  # Will raise DuplicateDrinkError
-except DuplicateDrinkError as e:
-    print(e)
-```
-
----
-
-## Learning Objectives
-
-This project demonstrates:
-
-- Clean separation of concerns  
-- Repository pattern  
-- Service layer validation  
-- Custom exception handling  
-- Python OOP fundamentals  
-- Simple domain modeling  
-
-Perfect for small‑group learning or introductory backend architecture.
-
----
-
-## License
-
 This project is for educational use.  
 
----
+This is an educational repository focused on object-oriented design and layered architecture rather than a full production-ready application.
