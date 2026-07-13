@@ -15,12 +15,16 @@ class DrinkRepository:
         return drink
     
     def update(self, name: str, drink: Drink) -> Drink | None:
-        self._drinks[name] = drink
-        return drink
+        updated_drink = self.get_by_id(name)
+        updated_drink.name = name
+
+        return updated_drink
+
 
     def delete(self, name: str) -> bool:
-        drinks = self.get_all
-        if drinks.pop(name):
+        drink = self.get_by_id(name)
+        if drink:
+            self._drinks.remove(drink)
             return True
 
         return False
