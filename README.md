@@ -1,5 +1,3 @@
----
-
 # Coffee Shop Exercise — Python Small Group Project (Express‑O)
 
 A small-group Python project simulating a simple drink‑management system for a coffee shop.  
@@ -12,8 +10,6 @@ This application demonstrates clean architecture principles using:
 - In‑memory data storage  
 
 It is designed for educational purposes and follows the structure outlined in the project’s Google Doc.
-
----
 
 ## Project Structure
 
