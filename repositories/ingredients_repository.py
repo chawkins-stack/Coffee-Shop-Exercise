@@ -17,7 +17,16 @@ class IngredientRepository:
         return ingredient
 
     def update(self, name: str, ingredient: Ingredient) -> Ingredient | None:
-        
+        existing_ingredient = self.get_by_id(name)
+        if existing_ingredient:
+            existing_ingredient.name = ingredient.name
+            existing_ingredient.price = ingredient.price
+            return existing_ingredient
+        return None
 
     def delete(self, name: str) -> bool:
-        ...
+        existing_ingredient = self.get_by_id(name)
+        if existing_ingredient:
+            self._ingredients.remove(existing_ingredient)
+            return True
+        return False
