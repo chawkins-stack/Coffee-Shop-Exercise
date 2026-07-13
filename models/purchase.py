@@ -13,3 +13,4 @@ class Purchase:
     total_cost: float
     Customer: Customer
      
+ 
