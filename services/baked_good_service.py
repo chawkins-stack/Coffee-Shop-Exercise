@@ -11,4 +11,4 @@ class Baked_goodService:
             raise DuplicateBakedGoodError(f"Baked good '{baked_good.name}' already exists.")
         return self._repository.add(baked_good)
 
-
+ 
