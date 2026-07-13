@@ -10,7 +10,8 @@ class Purchase_repository:
     def get_all(self) -> list[Purchase]:
         return self._purchases 
     
-    def get_
+    def get_by_date(self, date: datetime) -> list[Purchase]:
+        return [purchase for purchase in self._purchases if purchase.timestamp.date() == date.date()]
     
     def get_by_id(self, timestamp: datetime) -> Purchase | None:
         return next((purchase for purchase in self._purchases if purchase.timestamp == timestamp), None)
