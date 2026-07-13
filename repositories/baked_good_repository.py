@@ -9,6 +9,9 @@ class Baked_good_repository:
     def get_all(self) -> list[BakedGood]:
         return self._baked_goods 
     
+    def get_by_name(self, name: str) -> BakedGood | None:
+        return next((baked_good for baked_good in self._baked_goods if baked_good.name == name), None)
+    
     def get_by_id(self, id: Number) -> BakedGood | None:
         return next((baked_good for baked_good in self._baked_goods if baked_good.id == id), None)
     
