@@ -17,7 +17,7 @@ class IngredientRepository:
         return ingredient
 
     def update(self, name: str, ingredient: Ingredient) -> Ingredient | None:
-        ...
+        
 
     def delete(self, name: str) -> bool:
         ...
