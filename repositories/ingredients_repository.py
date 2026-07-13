@@ -1,6 +1,6 @@
 # repositories/ingredients_repository.py
 from models.baked_good import Ingredient
-from models.drink import Drink
+from models.ingredients import Ingredient
 
 class IngredientRepository:
     def __init__(self):
@@ -17,16 +17,14 @@ class IngredientRepository:
         return ingredient
 
     def update(self, name: str, ingredient: Ingredient) -> Ingredient | None:
-        existing_ingredient = self.get_by_id(name)
-        if existing_ingredient:
-            existing_ingredient.name = ingredient.name
-            existing_ingredient.price = ingredient.price
-            return existing_ingredient
-        return None
+        for i, d in enumerate(self._ingredients):
+            if d.name == name:
+                self._ingredients[i] = ingredient
+                return ingredient
 
     def delete(self, name: str) -> bool:
-        existing_ingredient = self.get_by_id(name)
-        if existing_ingredient:
-            self._ingredients.remove(existing_ingredient)
+        ingredient = self.get_by_id(name)
+        if ingredient:
+            self._ingredients.remove(ingredient)
             return True
         return False
