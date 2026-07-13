@@ -1,9 +1,11 @@
 # services/customer_service.py
+from numbers import Number
+
 from models import drink
 from repositories.customer_repository import customerRepository
 from models.customer import Customer
-from models.customer import customer
-from exceptions import DuplicateDrinkError
+from models.customer import Customer
+from exceptions import CustomerNotFoundError, DuplicateDrinkError
 
 class CustomerService:
     def __init__(self, repository: customerRepository):
@@ -17,10 +19,10 @@ class CustomerService:
     def get_all_customers(self) -> list[Customer]:
         return self._repository.get_all()
     
-    def get_customer(self, name: str) -> Customer:
-        customer = self._repository.get_by_id(name)
+    def get_customer(self, id: Number) -> Customer:
+        customer = self._repository.get_by_id(id)
         if customer is None:
-            raise CustomerNotFoundError(name)
+            raise CustomerNotFoundError(f"Customer with ID '{id}' was not found.")
         return customer
 
     def update_customer(self, name: str, updated: Customer) -> Customer:

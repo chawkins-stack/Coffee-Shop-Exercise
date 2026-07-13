@@ -1,7 +1,9 @@
 # services/ingredients_service.py
+from models.ingredients import Ingredient
 from repositories.drink_repository import DrinkRepository
 from models.drink import Drink
-from exceptions import DuplicateDrinkError
+from exceptions import DuplicateDrinkError, DuplicateIngredientError, IngredientNotFoundError
+from repositories.ingredients_repository import IngredientRepository
 
 class IngredientService:
     def __init__(self, repository: IngredientRepository):
@@ -18,16 +20,16 @@ class IngredientService:
     def get_ingredient(self, name: str) -> Ingredient:
         ingredient = self._repository.get_by_id(name)
         if ingredient is None:
-            raise DrinkNotFoundError(name)
+            raise IngredientNotFoundError(name)
         return ingredient
 
     def update_ingredient(self, name: str, updated: Ingredient) -> Ingredient:
         ingredient = self._repository.update(name, updated)
         if ingredient is None:
-            raise DrinkNotFoundError(name)
+            raise IngredientNotFoundError(name)
         return ingredient
 
     def delete_ingredient(self, name: str) -> bool:
         if not self._repository.delete(name):
-            raise DrinkNotFoundError(name)
+            raise IngredientNotFoundError(name)
         return True

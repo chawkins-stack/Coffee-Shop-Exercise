@@ -1,4 +1,4 @@
-from repositories.baked_good import Baked_good_repository
+from repositories.baked_good_repository import Baked_good_repository
 from models.baked_good import Baked_good
 from exceptions import DuplicateBakedGoodError
 
