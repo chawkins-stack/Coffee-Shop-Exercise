@@ -1,4 +1,3 @@
-# models/ingredient.py
 from dataclasses import dataclass
 
 @dataclass
