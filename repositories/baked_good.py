@@ -1,4 +1,5 @@
 from models.baked_good import BakedGood
+from numbers import Number
 
 class Baked_good_repository:
     def __init__(self):
@@ -7,14 +8,14 @@ class Baked_good_repository:
     def get_all(self) -> list[BakedGood]:
         return self._baked_goods 
     
-    def get_by_id(self, name: str) -> BakedGood | None:
+    def get_by_id(self,: str) -> BakedGood | None:
         return next((baked_good for baked_good in self._baked_goods if baked_good.name == name), None)
     
     def add(self, baked_good: BakedGood) -> BakedGood:
         self._baked_goods.append(baked_good)
         return baked_good
     
-    def update (self, name: str, baked_good: BakedGood) -> BakedGood | None:
+    def update (self, id: Number: str, baked_good: BakedGood) -> BakedGood | None:
         existing_baked_good = self.get_by_id(name)
         if existing_baked_good:
             existing_baked_good.name = baked_good.name

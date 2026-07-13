@@ -1,6 +1,6 @@
 
 from datetime import datetime
-
+from numbers import Number
 from models.purchase import Purchase 
 
 class Purchase_repository:
