@@ -1,6 +1,6 @@
 # repositories/customer_repository.py
 from models.customer import Customer
-from models.drink import Drink
+from models.customer import Customer
 
 class CustomerRepository:
     def __init__(self):
@@ -17,7 +17,15 @@ class CustomerRepository:
         return customer
 
     def update(self, name: str, customer: Customer) -> Customer | None:
+        for i, c in enumerate(self._customers):
+            if c.name == name:
+                self._customers[i] = customer
+                return customer
         ...
 
     def delete(self, name: str) -> bool:
-        ...
+        customer = self.get_by_id(name)
+        if customer:
+            self._customers.remove(customer)
+            return True
+        return False
