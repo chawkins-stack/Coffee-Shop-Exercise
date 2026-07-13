@@ -5,6 +5,6 @@ from numbers import Number
 class Customer:
     id: Number
     name: str
-    email:str
-    lifetime_spent:float
+    email: str
+    lifetime_spent: float
     
