@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 @dataclass
-class Ingredient:
+class Baked_good:
     name: str
     purchasing_cost: float
     marking_percentage: float
