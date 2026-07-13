@@ -1,8 +1,7 @@
-import datetime
-
 from repositories.purchase import Purchase_repository
 from models.purchase import Purchase
 from exceptions import DuplicatePurchaseError
+from datetime import datetime
 
 class PurchaseService:
     def __init__(self, repository: Purchase_repository):
@@ -25,6 +24,3 @@ class PurchaseService:
     def delete_purchase(self, timestamp: datetime) -> bool:
         return self._repository.delete(timestamp)
     
-from repositories
-from repositories.purchase import Purchase_repository
- 
