@@ -1,7 +1,9 @@
 from dataclasses import dataclass
+from numbers import Number
 
 @dataclass
-class Ingredient:
+class Baked_good:
+    id: Number
     name: str
     purchasing_cost: float
     marking_percentage: float
