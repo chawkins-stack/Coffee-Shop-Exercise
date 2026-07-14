@@ -13,10 +13,9 @@ class CustomerRepository:
 
     def get_by_id(self, id: Number ) -> Customer | None:
         return next((c for c in self._customers if c.id == id), None)
-    
+
     def get_by_name(self, name: str) -> Customer | None:
         return next((c for c in self._customers if c.name == name), None)
-
 
     def add(self, customer: Customer) -> Customer:
         self._customers.append(customer)
@@ -34,4 +33,3 @@ class CustomerRepository:
             self._customers.remove(customer)
             return True
         return False
-    
