@@ -1,3 +1,4 @@
+from models import baked_good
 from repositories.purchase_repository import Purchase_repository
 from models.purchase import Purchase
 from exceptions import DuplicatePurchaseError
@@ -12,6 +13,7 @@ class PurchaseService:
 
         if self._repository.get_by_id(purchase.timestamp) is not None:
             raise DuplicatePurchaseError(f"Purchase with timestamp '{purchase.timestamp}' already exists.")
+        purchase.baked_good.price = round(purchase.baked_good.price, 2)
         return self._repository.add(purchase)
     
     def get_all_purchases(self) -> list[Purchase]:
@@ -22,6 +24,7 @@ class PurchaseService:
     
     def update_purchase(self, timestamp: datetime, purchase: Purchase) -> Purchase | None:
         purchase.timestamp = purchase.timestamp.astimezone(timezone.utc)
+        purchase.baked_good.price = round(purchase.baked_good.price, 2)
         return self._repository.update(timestamp.astimezone(timezone.utc), purchase)
     
     def delete_purchase(self, timestamp: datetime) -> bool:
