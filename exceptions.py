@@ -30,5 +30,13 @@ class CustomerNotFoundError(Exception):
         super().__init__(f"Customer '{name}' was not found.")
 
 ''' Custom BakedGood Exception Handeling '''
+class DuplicateBakedGoodError(Exception):
+    def __init__(self, name: str):
+        super().__init__(f"Baked good '{name}' already exists.")
 
+    
 ''' Custom Purchase Exception Handeling '''
+class DuplicatePurchaseError(Exception):
+    def __init__(self, timestamp: str):
+        super().__init__(f"Purchase with timestamp '{timestamp}' already exists.")
+    
