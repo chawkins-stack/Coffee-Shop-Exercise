@@ -97,5 +97,4 @@ def baked_goods_dataset():
     baked_good_instances = [globals()[f"bg_{index:02d}"] for index in range(10)]
     for baked_good in baked_good_instances:
         baked_goods.add(baked_good)
-        
     return baked_goods
