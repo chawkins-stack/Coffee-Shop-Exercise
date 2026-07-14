@@ -35,3 +35,6 @@ def test_add_baked_good():
     data.add(bg_10)
     assert data.get_by_id(1010) == bg_10
 
+def test_update_existing_baked_good():
+    baked_goods_dataset().update(1002, "Brioche Cinnamon Roll")
+    assert baked_goods_dataset().get_by_name("Brioche Cinnamon Roll") == bg_02
