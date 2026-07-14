@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from numbers import Number
 
 @dataclass
-class Baked_good:
+class BakedGood:
     id: Number
     name: str
     purchasing_cost: float

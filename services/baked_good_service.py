@@ -2,7 +2,7 @@ from repositories.baked_good_repository import Baked_good_repository
 from models.baked_good import Baked_good
 from exceptions import DuplicateBakedGoodError
 
-class Baked_goodService:
+class BakedGoodService:
     def __init__(self, repository: Baked_good_repository):
         self._repository = repository
 
@@ -16,6 +16,10 @@ class Baked_goodService:
     
     def get_by_id(self, name: str) -> Baked_good:
         return self._repository.get_by_id(name)
+    
+    def get_by_name(self, name: str) -> Baked_good:
+        return self._repository.get_by_name(name)
+
     
     def add_baked_good(self, baked_good: Baked_good) -> Baked_good:
         return self._repository.add(baked_good)
