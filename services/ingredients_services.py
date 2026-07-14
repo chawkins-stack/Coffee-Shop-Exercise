@@ -1,38 +1,31 @@
-# services/ingredients_service.py
-from models.ingredients import Ingredient
-from repositories.drink_repository import DrinkRepository
-from models.drink import Drink
-from exceptions import DuplicateDrinkError, DuplicateIngredientError, IngredientNotFoundError
-from repositories.ingredients_repository import IngredientRepository
+from repositories.ingredients_repository import Ingredients_repository
+from models.ingredients import Ingredients
+from exceptions import DuplicateIngredientError
 
 class IngredientService:
-    def __init__(self, repository: IngredientRepository):
+    def __init__(self, repository: Ingredients_repository):
         self._repository = repository
 
-    def create_ingredient(self, ingredient: Ingredient) -> Ingredient:
+    def create_ingredient(self, ingredient: Ingredients) -> Ingredients:
         if self._repository.get_by_id(ingredient.name) is not None:
             raise DuplicateIngredientError(f"Ingredient '{ingredient.name}' already exists.")
         return self._repository.add(ingredient)
     
-    def get_all_ingredients(self) -> list[Ingredient]:
+    def get_all_ingredients(self) -> list[Ingredients]:
         return self._repository.get_all()
     
-    def get_by_name(self, name: str) -> Ingredient | None:
-        return next((ingredient for ingredient in self._ingredients if ingredient.name == name), None)
+    def get_by_id(self, name: str) -> Ingredients:
+        return self._repository.get_by_id(name)
     
-    def get_ingredient(self, name: str) -> Ingredient:
-        ingredient = self._repository.get_by_id(name)
-        if ingredient is None:
-            raise IngredientNotFoundError(name)
-        return ingredient
+    def get_by_name(self, name: str) -> Ingredients:
+        return self._repository.get_by_name(name)
 
-    def update_ingredient(self, name: str, updated: Ingredient) -> Ingredient:
-        ingredient = self._repository.update(name, updated)
-        if ingredient is None:
-            raise IngredientNotFoundError(name)
-        return ingredient
-
-    def delete_ingredient(self, name: str) -> bool:
-        if not self._repository.delete(name):
-            raise IngredientNotFoundError(name)
-        return True
+    
+    def add_ingredient(self, ingredient: Ingredients) -> Ingredients:
+        return self._repository.add(ingredient)
+    
+    def update_ingredient(self, ingredient: Ingredients) -> Ingredients:
+        return self._repository.update(ingredient)
+    
+    def delete_ingredient(self, name: str) -> None:
+        self._repository.delete(name)
