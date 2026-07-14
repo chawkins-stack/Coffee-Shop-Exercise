@@ -48,6 +48,5 @@ class CustomerService:
     
     def _calculate_sale_price(self, customer: Customer, price: Decimal) -> Decimal:
         cost_to_produce = customer.cost_to_produce
-        markup = customer.markup_percentage
-        sale_price = cost_to_produce + (cost_to_produce * markup )
+        sale_price = cost_to_produce + (cost_to_produce * price)
         return sale_price.quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
