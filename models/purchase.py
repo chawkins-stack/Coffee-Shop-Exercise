@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 import datetime
+from decimal import Decimal
 from numbers import Number
-from models.customer import Customer, Ingredient
+from models.customer import Customer
 from models.drink import Drink
 from models.baked_good import Baked_good
 
@@ -10,5 +11,6 @@ class Purchase:
     id: Number
     timestamp: datetime
     items: list[Drink, Baked_good]
-    total_cost: float
+    total_cost: Decimal
     Customer: Customer
+ 
