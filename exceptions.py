@@ -11,7 +11,6 @@ class InvalidDrinkError(Exception):
     def __init__(self, message: str):
         super().__init__(message)
 
-
 ''' Custom Ingredient Exception Handeling '''
 class DuplicateIngredientError(Exception):
     def __init__(self, name: str):
