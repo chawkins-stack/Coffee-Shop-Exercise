@@ -13,10 +13,14 @@ class CustomerRepository:
 
     def get_by_id(self, id: Number ) -> Customer | None:
         return next((c for c in self._customers if c.id == id), None)
-    
+
     def get_by_name(self, name: str) -> Customer | None:
         return next((c for c in self._customers if c.name == name), None)
 
+    # get by email method to check for duplicate emails
+    def get_by_email(self, email: str) -> Customer | None:
+        return next((c for c in self._customers if c.email == email), None)
+    
 
     def add(self, customer: Customer) -> Customer:
         self._customers.append(customer)

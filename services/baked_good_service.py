@@ -19,29 +19,26 @@ class BakedGoodService:
         baked_good.price = baked_good.price.quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
 
         return self._repository.add(baked_good)
-    
 
     def get_all_baked_goods(self) -> list[Baked_good]:
         return self._repository.get_all()
-    
+
     def get_by_id(self, id: Number) -> Baked_good:
         return self._repository.get_by_id(id)
-    
+
     def get_by_name(self, name: str) -> Baked_good:
         return self._repository.get_by_name(name) 
 
-    
     def add_baked_good(self, baked_good: Baked_good) -> Baked_good:
         baked_good.price = baked_good.price.quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
         return self._repository.add(baked_good)
-    
+
     def update_baked_good(self, baked_good: Baked_good) -> Baked_good:
         baked_good.price = baked_good.price.quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
         return self._repository.update(baked_good)
-    
+
     def delete_baked_good(self, name: str) -> None:
         self._repository.delete(name)
-    
 
     def _calculate_sale_price(self, price: Decimal) -> Decimal:
         discount = Decimal("0.10")

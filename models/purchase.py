@@ -5,8 +5,6 @@ from models.customer import Customer, Ingredient
 from models.drink import Drink
 from models.baked_good import Baked_good
 
-
-
 @dataclass
 class Purchase:
     id: Number
@@ -14,5 +12,3 @@ class Purchase:
     items: list[Drink, Baked_good]
     total_cost: float
     Customer: Customer
-     
- 
