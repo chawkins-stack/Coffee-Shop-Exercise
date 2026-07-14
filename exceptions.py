@@ -6,6 +6,10 @@ class DrinkNotFoundError(Exception):
     def __init__(self, name: str):
         super().__init__(f"Drink '{name}' was not found.")
 
+class InvalidDrinkError(Exception):
+    def __init__(self, message: str):
+        super().__init__(message)
+
 class DuplicateIngredientError(Exception):
     def __init__(self, name: str):
         super().__init__(f"Ingredient '{name}' already exists.")
