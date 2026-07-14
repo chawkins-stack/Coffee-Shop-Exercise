@@ -86,3 +86,8 @@ print(service.get_all_drinks())
 This project is for educational use.  
 
 This is an educational repository focused on object-oriented design and layered architecture rather than a full production-ready application.
+
+## Contributors
+<a href="[https://github.com/wshepelak-catalyte/Patient-Intake-Console-App/graphs/contributors]">
+  <img src="https://contrib.rocks/image?repo=chawkins-stack/Coffee-Shop-Excercise"/>
+</a>
