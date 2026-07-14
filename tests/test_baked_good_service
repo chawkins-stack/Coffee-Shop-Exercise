@@ -1,0 +1,97 @@
+from models.baked_good import Baked_good
+
+bg_001 = Baked_good(
+    1000,
+    "Chocolate Croissant", 
+    1.20,
+    0.65,
+    "Golden Wheat Bakers Co.",
+    ["Wheat", "Milk", "Eggs", "Soy"],
+    1.98
+)
+bg_002 = Baked_good(
+    1001,
+    "Blueberry Muffin", 
+    0.95,
+    0.80,
+    "Riverside Pastry Supply",
+    ["Wheat", "Milk", "Eggs"],
+    1.71
+)
+bg_003 = Baked_good(
+    1002,
+    "Cinnamon Roll", 
+    1.50,
+    0.55,
+    "Sweet Harvest Baking Co.",
+    ["Wheat", "Milk", "Eggs"],
+    2.33
+)
+bg_004 = Baked_good(
+    1003,
+    "Almond Biscotti", 
+    0.85,
+    0.90,
+    "Whisk & Wonder Bakeshop",
+    ["Wheat", "Eggs", "Tree Nuts (Almonds)"],
+    1.62
+)
+bg_005 = Baked_good(
+    1004,
+    "Peanut Butter Cookie", 
+    0.60,
+    1.00,
+    "Hearth & Home Bakery Supply",
+    ["Wheat", "Eggs", "Peanuts"],
+    1.20
+)
+bg_006 = Baked_good(
+    1005,
+    "Sourdough Baguette", 
+    1.80,
+    0.45,
+    "Millstone Artisan Breads",
+    ["Wheat"],
+    2.61
+)
+bg_007 = Baked_good(
+    1006,
+    "Red Velvet Cupcake", 
+    1.10,
+    0.70,
+    "Sugarplum Dessert Distributors",
+    ["Wheat", "Milk", "Eggs"],
+    1.87
+)
+bg_008 = Baked_good(
+    1007,
+    "Pecan Danish", 
+    1.65,
+    0.60,
+    "Golden Wheat Bakers Co.",
+    ["Wheat", "Milk", "Eggs", "Tree Nuts (Pecans)"],
+    2.64
+)
+bg_009 = Baked_good(
+    1008,
+    "Sesame Bagel", 
+    0.75,
+    0.75,
+    "Riverside Pastry Supply",
+    ["Wheat", "Sesame"],
+    1.31
+)
+bg_010 = Baked_good(
+    1009,
+    "Coconut Macaron", 
+    1.05,
+    0.85,
+    "Whisk & Wonder Bakeshop",
+    ["Eggs", "Tree Nuts (Coconut)"],
+    1.94
+)
+
+baked_goods_1 = []
+baked_goods_1 += [globals()[f"bg_0{number}"] for number in range(0,10)]
+
+print(baked_goods_1[0].id())
