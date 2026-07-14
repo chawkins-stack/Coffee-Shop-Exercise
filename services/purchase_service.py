@@ -10,9 +10,8 @@ from decimal import Decimal, ROUND_HALF_EVEN
 purchase.baked_good.price = Decimal(purchase.baked_good.price).quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
 
 class PurchaseService:
-    def __init__(self, purchase_repository: Purchase_repository, customer_repository: CustomerRepository):
+    def __init__(self, purchase_repository: Purchase_repository):
         self._repository = purchase_repository
-        self._customer_repository = customer_repository
 
     def create_purchase(self, purchase: Purchase) -> Purchase:
         purchase.timestamp = datetime.now(timezone.utc)

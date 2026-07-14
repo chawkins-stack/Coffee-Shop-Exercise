@@ -4,7 +4,7 @@ from models import purchase
 from models import baked_good
 from repositories.baked_good_repository import Baked_good_repository
 from models.baked_good import Baked_good
-from exceptions import DuplicateBakedGoodError
+from exceptions import DuplicateBakedGoodError, BakedGoodNotFoundError 
 from decimal import Decimal, ROUND_HALF_EVEN
 
 baked_good.price = baked_good.price.quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
@@ -17,9 +17,14 @@ class BakedGoodService:
         if self._repository.get_by_id(baked_good.id) is not None:
             raise DuplicateBakedGoodError(f"Baked good '{baked_good.name}' already exists.")
         baked_good.price = baked_good.price.quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
-
         return self._repository.add(baked_good)
 
+    def get_baked_good(self, id: Number) -> Baked_good:
+        baked_good = self._repository.get_by_id(id)
+        if baked_good is None:
+            raise BakedGoodNotFoundError(f"Baked good with ID '{id}' was not found.")
+        return baked_good
+    
     def get_all_baked_goods(self) -> list[Baked_good]:
         return self._repository.get_all()
 
