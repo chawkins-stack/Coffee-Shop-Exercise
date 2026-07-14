@@ -4,10 +4,6 @@ from numbers import Number
 from models.purchase import Purchase
 from datetime import datetime, timezone
 
-purchase = Purchase(
-    timestamp=datetime.now(timezone.utc)
-) 
-
 class Purchase_repository:
     def __init__(self):
         self._purchases: list[Purchase] = []

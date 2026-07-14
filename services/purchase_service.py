@@ -1,4 +1,4 @@
-from repositories.purchase import Purchase_repository
+from repositories.purchase_repository import Purchase_repository
 from models.purchase import Purchase
 from exceptions import DuplicatePurchaseError
 from datetime import datetime, timezone
