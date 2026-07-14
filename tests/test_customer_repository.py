@@ -29,3 +29,16 @@ def test_get_by_email_is_c_07():
 
 def test_get_by_email_nonexistent_email():
     assert customer_dataset().get_by_email("johnny.appleseed@gmail.com") is None
+
+def test_add_customer():
+    c_10 = Customer(
+        2010,
+        "Michael Jordan",
+        "mjordan@gmail.com",
+        23.23
+    )
+    data = customer_dataset()
+    data.add(c_10)
+    assert data.get_by_id(2010) is c_10
+
+# def test_update_existing_id():
