@@ -1,3 +1,4 @@
+from decimal import ROUND_HALF_EVEN, Decimal
 from numbers import Number
 import re
 
@@ -44,3 +45,9 @@ class CustomerService:
     def is_unique_email(self, email: str) -> bool:
         existing_customer = self._repository.get_by_email(email)
         return existing_customer is None
+    
+    def _calculate_sale_price(self, customer: Customer, price: Decimal) -> Decimal:
+        cost_to_produce = customer.cost_to_produce
+        markup = customer.markup_percentage
+        sale_price = cost_to_produce + (cost_to_produce * markup )
+        return sale_price.quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
