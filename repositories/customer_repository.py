@@ -27,7 +27,6 @@ class CustomerRepository:
             if c.id == id:
                 self._customers[i] = customer
                 return customer
-        ...
 
     def delete(self, id: Number) -> bool:
         customer = self.get_by_id(id)
