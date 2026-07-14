@@ -2,7 +2,7 @@ from models import baked_good
 from models.baked_good import BakedGood
 from numbers import Number
 
-class Baked_good_repository:
+class BakedGood_repository:
     def __init__(self):
         self._baked_goods: list[BakedGood] = []
 
@@ -22,7 +22,7 @@ class Baked_good_repository:
     def update (self, id: Number, baked_good: BakedGood) -> BakedGood | None:
         existing_baked_good = self.get_by_id(id)
         if existing_baked_good:
-            existing_baked_good.name = baked_good.name
+            existing_baked_good = baked_good
             return existing_baked_good
         return None
 
