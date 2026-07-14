@@ -21,7 +21,7 @@ class IngredientRepository:
             if d.name == name:
                 self._ingredients[i] = ingredient
                 return ingredient
-            
+
     def get_by_name(self, name: str) -> Ingredient | None:
         return next((ingredient for ingredient in self._ingredients if ingredient.name == name), None)
 

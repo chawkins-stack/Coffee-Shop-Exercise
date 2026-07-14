@@ -1,13 +1,14 @@
 from dataclasses import dataclass
 from numbers import Number
+from decimal import Decimal
 
 @dataclass
-class Baked_good:
+class BakedGood:
     id: Number
     name: str
-    purchasing_cost: float
-    marking_percentage: float
+    purchasing_cost: Decimal
+    marking_percentage: Decimal
     vendor_name: str
     allergens: list[str]
-    sales_price: float 
+    sales_price: Decimal
     
