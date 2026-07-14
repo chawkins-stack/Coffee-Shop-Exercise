@@ -1,12 +1,13 @@
 from numbers import Number
 from unicodedata import decimal
 from models import purchase
+from models import baked_good
 from repositories.baked_good_repository import Baked_good_repository
 from models.baked_good import Baked_good
 from exceptions import DuplicateBakedGoodError
 from decimal import Decimal, ROUND_HALF_EVEN
 
-purchase.baked_good.price = Decimal(purchase.baked_good.price).quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
+baked_good.price = baked_good.price.quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
 
 class BakedGoodService:
     def __init__(self, repository: Baked_good_repository):
