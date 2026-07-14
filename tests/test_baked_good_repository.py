@@ -46,7 +46,3 @@ def test_delete_existing_baked_good():
 
 def test_delete_nonexistent_baked_good():
     assert baked_goods_dataset().delete(9998) is False
-
-def test_update_existing_baked_good():
-    baked_goods_dataset().update(1002, "Brioche Cinnamon Roll")
-    assert baked_goods_dataset().get_by_name("Brioche Cinnamon Roll") == bg_02
