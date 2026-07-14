@@ -83,7 +83,6 @@ service.create_drink(drink)
 print(service.get_all_drinks())
 ```
 
-This project is for educational use.  
 
 This is an educational repository focused on object-oriented design and layered architecture rather than a full production-ready application.
 
