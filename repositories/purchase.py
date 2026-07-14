@@ -1,7 +1,12 @@
 
 from datetime import datetime
 from numbers import Number
-from models.purchase import Purchase 
+from models.purchase import Purchase
+from datetime import datetime, timezone
+
+purchase = Purchase(
+    timestamp=datetime.now(timezone.utc)
+) 
 
 class Purchase_repository:
     def __init__(self):
@@ -18,13 +23,14 @@ class Purchase_repository:
     
     
     def add(self, purchase: Purchase) -> Purchase:
+        purchase.timestamp = purchase.timestamp.astimezone(datetime.timezone.utc)
         self._purchases.append(purchase)
         return purchase
     
     def update (self, timestamp: datetime, purchase: Purchase) -> Purchase | None:
         existing_purchase = self.get_by_id(timestamp)
         if existing_purchase:
-            existing_purchase.timestamp = purchase.timestamp
+            existing_purchase.timestamp = purchase.timestamp.astimezone(datetime.timezone.utc)
             return existing_purchase
         return None
 
