@@ -7,6 +7,7 @@ from models.customer import Customer
 class CustomerRepository:
     def __init__(self):
         self._customers: list[Customer] = []
+        self._next_id = 1
 
     def get_all(self) -> list[Customer]:
         return self._customers
@@ -23,6 +24,8 @@ class CustomerRepository:
     
 
     def add(self, customer: Customer) -> Customer:
+        customer.id = self._next_id
+        self._next_id += 1
         self._customers.append(customer)
         return customer
 
