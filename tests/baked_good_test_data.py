@@ -1,5 +1,5 @@
 from models.baked_good import BakedGood
-from repositories.baked_good_repository import Baked_good_repository
+from repositories.baked_good_repository import BakedGoodRepository
 
 bg_00 = BakedGood(
     1000,
@@ -93,9 +93,8 @@ bg_09 = BakedGood(
 )
 
 def baked_goods_dataset():
-    baked_goods = Baked_good_repository()
+    baked_goods = BakedGoodRepository()
     baked_good_instances = [globals()[f"bg_{index:02d}"] for index in range(10)]
     for baked_good in baked_good_instances:
         baked_goods.add(baked_good)
-        
     return baked_goods

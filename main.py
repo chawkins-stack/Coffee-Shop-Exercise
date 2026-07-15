@@ -31,7 +31,7 @@ ingredient_repo = IngredientRepository()
 
 # Initialize services
 customer_service = CustomerService(customer_repo)
-purchase_service = PurchaseService(purchase_repo)
+purchase_service = PurchaseService(purchase_repo, customer_service)
 drink_service = DrinkService(drink_repo)
 baked_good_service = BakedGoodService(baked_good_repo)
 ingredient_service = IngredientService(ingredient_repo)
@@ -51,9 +51,22 @@ def create_customer_ui():
 def create_drink_ui():
     print("\n--- Create Drink ---")
     name = input("Drink name: ")
-    price = float(input("Price: "))
+    raw_ingredients = input("List ingredients (comma-separated): ")
+    ingredients = [
+        Ingredient(name=i.strip(), purchasing_cost=0, unit_amount=0, unit_of_measure=0)
+        for i in raw_ingredients.split(",") if i.strip()
+    ]
 
-    drink = Drink(name=name, price=price)
+    cost_to_produce = Decimal(input("Cost to produce: "))
+    markup_percentage = Decimal(input("Markup percentage (e.g., 0.25 for 25%): "))
+
+    drink = Drink(
+        name=name,
+        ingredients=ingredients,
+        cost_to_produce=cost_to_produce,
+        markup_percentage=markup_percentage
+    )
+
     drink_service.create_drink(drink)
 
     print(f"Drink '{name}' created.\n")
@@ -61,10 +74,22 @@ def create_drink_ui():
 
 def create_baked_good_ui():
     print("\n--- Create Baked Good ---")
-    name = input("Item name: ")
-    price = Decimal(input("Price: "))
 
-    baked_good = BakedGood(name=name, price=price)
+    name = input("Item name: ")
+    purchasing_cost = Decimal(input("Cost to purchase: "))
+    markup_percentage = Decimal(input("Markup percentage (e.g., 0.25 for 25%): "))
+    vendor_name = input("Vendor name: ")
+
+    raw_allergens = input("List allergens (comma-separated): ")
+    allergens = [ a.strip() for a in raw_allergens.split(",") if a.strip()]
+
+    baked_good = BakedGood(
+        name=name,
+        purchasing_cost=purchasing_cost,
+        marking_percentage=markup_percentage,
+        vendor_name=vendor_name,
+        allergens=allergens
+    )
     baked_good_service.create_baked_good(baked_good)
 
     print(f"Baked good '{name}' created.\n")
@@ -74,7 +99,17 @@ def add_ingredient_ui():
     print("\n--- Add Ingredient ---")
     name = input("Ingredient name: ")
 
-    ingredient = Ingredient(name=name)
+    purchase_cost = Decimal(input("Purchase Cost: "))
+    unit_amount = Decimal(input("Unit amount (e.g., 1.5): "))
+    unit_of_measure = input("Unit of measure (e.g., kg, ml, oz): ")
+
+    ingredient = Ingredient(
+        name=name,
+        purchasing_cost=purchase_cost,
+        unit_amount=unit_amount,
+        unit_of_measure=unit_of_measure
+    )
+
     ingredient_service.create_ingredient(ingredient)
 
     print(f"Ingredient '{name}' added.\n")
@@ -90,25 +125,25 @@ def create_purchase_ui():
         print(f"{c.id}. {c.name}")
 
     customer_id = int(input("Choose customer ID: "))
-    customer = customer_service.get_customer_by_id(customer_id)
+    customer = customer_service.get_by_id(customer_id)
 
     # Select items
     print("\nDrinks:")
     drinks = drink_service.get_all_drinks()
     for d in drinks:
-        print(f"{d.id}. {d.name} - ${d.price}")
+        print(f"{d.id}. {d.name} - ${d.sale_price}")
 
     print("\nBaked Goods:")
     baked_goods = baked_good_service.get_all_baked_goods()
     for b in baked_goods:
-        print(f"{b.id}. {b.name} - ${b.price}")
+        print(f"{b.id}. {b.name} - ${b.sale_price}")
 
     item_ids = input("Enter item IDs separated by commas: ")
     item_ids = [int(x.strip()) for x in item_ids.split(",")]
 
     purchase = Purchase(
-        customer_id=customer_id,
-        item_ids=item_ids,
+        Customer=customer_service.get_by_id(customer_id),
+        items=item_ids,
         timestamp=datetime.now(timezone.utc)
     )
 
@@ -126,7 +161,7 @@ def view_customers_ui():
 def view_drinks_ui():
     print("\n--- Drinks ---")
     for d in drink_service.get_all_drinks():
-        print(f"{d.id}: {d.name} - ${d.price}")
+        print(f"{d.id}: {d.name} - ${d.sale_price}")
     print()
 
 
@@ -140,7 +175,7 @@ def view_ingredients_ui():
 def view_baked_goods_ui():
     print("\n--- Baked Goods ---")
     for b in baked_good_service.get_all_baked_goods():
-        print(f"{b.id}: {b.name} - ${b.price}")
+        print(f"{b.id}: {b.name} - ${b.sale_price}")
     print()
 
 

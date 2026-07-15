@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 class PurchaseRepository:
     def __init__(self):
         self._purchases: list[Purchase] = []
+        self._next_id = 7001
 
     def get_all(self) -> list[Purchase]:
         return self._purchases 
@@ -17,6 +18,8 @@ class PurchaseRepository:
         return next((purchase for purchase in self._purchases if purchase.timestamp == timestamp), None)
 
     def add(self, purchase: Purchase) -> Purchase:
+        purchase.id = self._next_id
+        self._next_id += 1
         purchase.timestamp = purchase.timestamp.astimezone(datetime.timezone.utc)
         self._purchases.append(purchase)
         return purchase
