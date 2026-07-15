@@ -1,6 +1,7 @@
-from models.baked_good import Baked_good
+from models.baked_good import BakedGood
+from repositories.baked_good_repository import Baked_good_repository
 
-bg_001 = Baked_good(
+bg_00 = BakedGood(
     1000,
     "Chocolate Croissant", 
     1.20,
@@ -9,7 +10,7 @@ bg_001 = Baked_good(
     ["Wheat", "Milk", "Eggs", "Soy"],
     1.98
 )
-bg_002 = Baked_good(
+bg_01 = BakedGood(
     1001,
     "Blueberry Muffin", 
     0.95,
@@ -18,7 +19,7 @@ bg_002 = Baked_good(
     ["Wheat", "Milk", "Eggs"],
     1.71
 )
-bg_003 = Baked_good(
+bg_02 = BakedGood(
     1002,
     "Cinnamon Roll", 
     1.50,
@@ -27,7 +28,7 @@ bg_003 = Baked_good(
     ["Wheat", "Milk", "Eggs"],
     2.33
 )
-bg_004 = Baked_good(
+bg_03 = BakedGood(
     1003,
     "Almond Biscotti", 
     0.85,
@@ -36,7 +37,7 @@ bg_004 = Baked_good(
     ["Wheat", "Eggs", "Tree Nuts (Almonds)"],
     1.62
 )
-bg_005 = Baked_good(
+bg_04 = BakedGood(
     1004,
     "Peanut Butter Cookie", 
     0.60,
@@ -45,7 +46,7 @@ bg_005 = Baked_good(
     ["Wheat", "Eggs", "Peanuts"],
     1.20
 )
-bg_006 = Baked_good(
+bg_05 = BakedGood(
     1005,
     "Sourdough Baguette", 
     1.80,
@@ -54,7 +55,7 @@ bg_006 = Baked_good(
     ["Wheat"],
     2.61
 )
-bg_007 = Baked_good(
+bg_06 = BakedGood(
     1006,
     "Red Velvet Cupcake", 
     1.10,
@@ -63,7 +64,7 @@ bg_007 = Baked_good(
     ["Wheat", "Milk", "Eggs"],
     1.87
 )
-bg_008 = Baked_good(
+bg_07 = BakedGood(
     1007,
     "Pecan Danish", 
     1.65,
@@ -72,7 +73,7 @@ bg_008 = Baked_good(
     ["Wheat", "Milk", "Eggs", "Tree Nuts (Pecans)"],
     2.64
 )
-bg_009 = Baked_good(
+bg_08 = BakedGood(
     1008,
     "Sesame Bagel", 
     0.75,
@@ -81,7 +82,7 @@ bg_009 = Baked_good(
     ["Wheat", "Sesame"],
     1.31
 )
-bg_010 = Baked_good(
+bg_09 = BakedGood(
     1009,
     "Coconut Macaron", 
     1.05,
@@ -91,7 +92,10 @@ bg_010 = Baked_good(
     1.94
 )
 
-baked_goods_1 = []
-baked_goods_1 += [globals()[f"bg_0{number}"] for number in range(0,10)]
-
-print(baked_goods_1[0].id())
+def baked_goods_dataset():
+    baked_goods = Baked_good_repository()
+    baked_good_instances = [globals()[f"bg_{index:02d}"] for index in range(10)]
+    for baked_good in baked_good_instances:
+        baked_goods.add(baked_good)
+        
+    return baked_goods

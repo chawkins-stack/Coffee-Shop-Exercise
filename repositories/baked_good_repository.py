@@ -2,7 +2,7 @@ from models import baked_good
 from models.baked_good import BakedGood
 from numbers import Number
 
-class Baked_good_repository:
+class BakedGoodRepository:
     def __init__(self):
         self._baked_goods: list[BakedGood] = []
 
