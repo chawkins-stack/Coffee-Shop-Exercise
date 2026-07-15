@@ -1,5 +1,4 @@
 from numbers import Number
-
 from repositories.baked_good_repository import BakedGoodRepository
 from models.baked_good import BakedGood
 from exceptions import DuplicateBakedGoodError, BakedGoodNotFoundError 

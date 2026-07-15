@@ -1,6 +1,5 @@
 # repositories/customer_repository.py
 from numbers import Number
-
 from models.customer import Customer
 from models.customer import Customer
 
