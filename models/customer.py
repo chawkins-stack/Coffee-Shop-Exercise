@@ -4,8 +4,7 @@ from decimal import Decimal
 
 @dataclass
 class Customer:
-    id: Number
-    name: str
-    email: str
-    lifetime_spent: Decimal
-    
+  def __init__(self, id: int, name:str,email: str):
+    self.id = id
+    self.name = name
+    self.email = email
