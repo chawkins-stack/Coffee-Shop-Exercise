@@ -2,9 +2,7 @@ from decimal import Decimal, ROUND_HALF_EVEN
 from numbers import Number
 import re
 
-from repositories.baked_good_repository import BakedGood
 from repositories.customer_repository import CustomerRepository
-from repositories.drink_repository import Drink
 from models.customer import Customer
 from exceptions import CustomerNotFoundError, DuplicateCustomerError
 
@@ -33,6 +31,9 @@ class CustomerService:
 
     def get_all_customers(self) -> list[Customer]:
         return self._repository.get_all()
+    
+    def get_by_email(self, email: str) -> Customer | None:
+        return self._repository.get_by_email(email)
 
     def get_by_id(self, id: Number) -> Customer:
         return self._repository.get_by_id(id)

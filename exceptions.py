@@ -1,4 +1,9 @@
 ''' Custom Drink Exception Handeling '''
+from numbers import Number
+
+from models.customer import Customer
+
+
 class DuplicateDrinkError(Exception):
     def __init__(self, name: str):
         super().__init__(f"Drink '{name}' already exists.")
