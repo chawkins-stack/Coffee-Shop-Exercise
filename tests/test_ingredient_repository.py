@@ -11,3 +11,12 @@ def test_get_by_id_is_i_09():
 
 def test_get_by_id_nonexistent_id():
     assert ingredient_dataset().get_by_id(9797) is None
+
+def test_get_by_name_is_i_06():
+    assert ingredient_dataset().get_by_name("Matcha Powder") is i_06
+
+def test_get_by_name_is_i_10():
+    assert ingredient_dataset().get_by_name("Whipped Cream") is i_10
+
+def test_get_by_name_nonexistent_name():
+    assert ingredient_dataset().get_by_name("Soy Milk") is None
