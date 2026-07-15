@@ -31,7 +31,7 @@ ingredient_repo = IngredientRepository()
 
 # Initialize services
 customer_service = CustomerService(customer_repo)
-purchase_service = PurchaseService(purchase_repo)
+purchase_service = PurchaseService(purchase_repo, customer_service)
 drink_service = DrinkService(drink_repo)
 baked_good_service = BakedGoodService(baked_good_repo)
 ingredient_service = IngredientService(ingredient_repo)
@@ -51,9 +51,22 @@ def create_customer_ui():
 def create_drink_ui():
     print("\n--- Create Drink ---")
     name = input("Drink name: ")
-    price = float(input("Price: "))
+    raw_ingredients = input("List ingredients (comma-separated): ")
+    ingredients = [
+        Ingredient(name=i.strip(), purchasing_cost=0, unit_amount=0, unit_of_measure=0)
+        for i in raw_ingredients.split(",") if i.strip()
+    ]
 
-    drink = Drink(name=name, price=price)
+    cost_to_produce = Decimal(input("Cost to produce: "))
+    markup_percentage = Decimal(input("Markup percentage (e.g., 0.25 for 25%): "))
+
+    drink = Drink(
+        name=name,
+        ingredients=ingredients,
+        cost_to_produce=cost_to_produce,
+        markup_percentage=markup_percentage
+    )
+
     drink_service.create_drink(drink)
 
     print(f"Drink '{name}' created.\n")
@@ -74,7 +87,17 @@ def add_ingredient_ui():
     print("\n--- Add Ingredient ---")
     name = input("Ingredient name: ")
 
-    ingredient = Ingredient(name=name)
+    purchase_cost = Decimal(input("Purchase Cost: "))
+    unit_amount = Decimal(input("Unit amount (e.g., 1.5): "))
+    unit_of_measure = input("Unit of measure (e.g., kg, ml, oz): ")
+
+    ingredient = Ingredient(
+        name=name,
+        purchase_cost=purchase_cost,
+        unit_amount=unit_amount,
+        unit_of_measure=unit_of_measure
+    )
+
     ingredient_service.create_ingredient(ingredient)
 
     print(f"Ingredient '{name}' added.\n")
@@ -126,7 +149,7 @@ def view_customers_ui():
 def view_drinks_ui():
     print("\n--- Drinks ---")
     for d in drink_service.get_all_drinks():
-        print(f"{d.id}: {d.name} - ${d.price}")
+        print(f"{d.id}: {d.name} - ${d.sale_price}")
     print()
 
 

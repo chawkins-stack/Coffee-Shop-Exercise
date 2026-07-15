@@ -5,6 +5,7 @@ from models.ingredients import Ingredient
 class IngredientRepository:
     def __init__(self):
         self._ingredients: list[Ingredient] = []
+        self._next_id = 1
 
     def get_all(self) -> list[Ingredient]:
         return self._ingredients
@@ -16,6 +17,9 @@ class IngredientRepository:
         return next((ingredient for ingredient in self._ingredients if ingredient.name == name), None)
 
     def add(self, ingredient: Ingredient) -> Ingredient:
+        ingredient.id = self._next_id
+        self._next_id += 1
+        
         self._ingredients.append(ingredient)
         return ingredient
 
