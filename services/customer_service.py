@@ -2,9 +2,7 @@ from decimal import Decimal, ROUND_HALF_EVEN
 from numbers import Number
 import re
 
-from repositories.baked_good_repository import BakedGood
 from repositories.customer_repository import CustomerRepository
-from repositories.drink_repository import Drink
 from models.customer import Customer
 from exceptions import CustomerNotFoundError, DuplicateCustomerError
 
@@ -14,14 +12,11 @@ class CustomerService:
         self._repository = repository
 
     def create_customer(self, customer: Customer) -> Customer:
-        if self._repository.get_by_id(customer.id) is not None:
-            raise DuplicateCustomerError(
-                f"Customer with ID '{customer.id}' already exists."
-            )
+    
 
         if not self.is_valid_email(customer.email):
             raise CustomerNotFoundError(
-                f"Invalid email format: '{customer.email}'"
+                f"Customer with ID '{customer.id}' has an invalid email format."
             )
 
         if not self.is_unique_email(customer.email):
@@ -33,6 +28,9 @@ class CustomerService:
 
     def get_all_customers(self) -> list[Customer]:
         return self._repository.get_all()
+    
+    def get_by_email(self, email: str) -> Customer | None:
+        return self._repository.get_by_email(email)
 
     def get_by_id(self, id: Number) -> Customer:
         return self._repository.get_by_id(id)
@@ -52,7 +50,7 @@ class CustomerService:
         # Validate email format
         if not self.is_valid_email(customer.email):
             raise CustomerNotFoundError(
-                f"Invalid email format: '{customer.email}'"
+                f"Customer with ID '{customer.id}' has an invalid email format."
             )
 
         # Check that another customer doesn't already have this email
@@ -66,7 +64,7 @@ class CustomerService:
                 f"Customer with email '{customer.email}' already exists."
             )
 
-        return self._repository.update(customer)
+        return self._repository.update(customer.id, customer)
 
     def delete_customer(self, id: Number) -> None:
         self._repository.delete(id)
@@ -78,8 +76,6 @@ class CustomerService:
     def is_unique_email(self, email: str) -> bool:
         existing_customer = self._repository.get_by_email(email)
         return existing_customer is None
-
-        # calculate the sale price for a customer based on their lifetime spend and the prices of baked goods and drinks they have purchased
 
     def _calculate_sale_price(
         self, customer: Customer, price: Decimal
