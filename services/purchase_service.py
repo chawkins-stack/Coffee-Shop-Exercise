@@ -1,6 +1,4 @@
 
-from models import purchase
-from repositories.customer_repository import CustomerRepository
 from repositories.purchase_repository import PurchaseRepository
 from models.purchase import Purchase
 from exceptions import DuplicatePurchaseError, PurchaseNotFoundError
@@ -62,3 +60,5 @@ class PurchaseService:
     def delete_purchase(self, timestamp: datetime) -> bool:
         timestamp = timestamp.astimezone(timezone.utc)
         return self._repository.delete(timestamp)
+ 
+ 
