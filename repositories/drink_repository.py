@@ -4,6 +4,7 @@ from numbers import Number
 class DrinkRepository:
     def __init__(self):
         self._drinks: list[Drink] = []
+        self._next_id = 1
 
     def get_all(self) -> list[Drink]:
         return self._drinks
@@ -15,6 +16,8 @@ class DrinkRepository:
         return next((d for d in self._drinks if d.name == name), None)
 
     def add(self, drink: Drink) -> Drink:
+        drink.id = self._next_id
+        self._next_id += 1
         self._drinks.append(drink)
         return drink
 

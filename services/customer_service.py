@@ -12,10 +12,6 @@ class CustomerService:
         self._repository = repository
 
     def create_customer(self, customer: Customer) -> Customer:
-        # if self._repository.get_by_id(customer.id) is not None:
-        #     raise DuplicateCustomerError(
-        #         f"Customer with ID '{customer.id}' already exists."
-        #     )
 
         if not self.is_valid_email(customer.email):
             raise CustomerNotFoundError(
