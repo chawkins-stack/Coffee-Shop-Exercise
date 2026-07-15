@@ -10,7 +10,7 @@ from models.baked_good import BakedGood
 @dataclass
 class Purchase:
     timestamp: datetime
-    items: list[Drink, BakedGood]
-    total_cost: Decimal
+    items: list[object]
     Customer: Customer
+    total_cost: Optional[Decimal] = None
     id: Optional[Number] = None

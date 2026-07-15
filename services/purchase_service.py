@@ -1,12 +1,13 @@
+from models.purchase import Purchase
+from models.drink import Drink
+from models.baked_good import BakedGood
 
 from repositories.purchase_repository import PurchaseRepository
-from models.purchase import Purchase
 from services.customer_service import CustomerService
 from exceptions import DuplicatePurchaseError, PurchaseNotFoundError
 from datetime import datetime, timezone
 from decimal import Decimal, ROUND_HALF_EVEN
 
-# purchase.BakedGood.sales_price = Decimal(purchase.BakedGood.sales_price).quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
 
 class PurchaseService:
     def __init__(self, purchase_repository: PurchaseRepository, customer_service: CustomerService):
@@ -15,15 +16,15 @@ class PurchaseService:
 
     def create_purchase(self, purchase: Purchase) -> Purchase:
         purchase.timestamp = datetime.now(timezone.utc)
+        purchase.total_cost = self._calculate_total_cost(purchase)
 
         if self._repository.get_by_id(purchase.timestamp) is not None:
             raise DuplicatePurchaseError(f"Purchase with timestamp '{purchase.timestamp}' already exists.")
         
-        purchase.baked_good.price = Decimal(purchase.baked_good.price).quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
-
         if purchase.customer_email is not None:
             self._customer_service.add_to_lifetime_spending(purchase.customer_email, purchase.baked_good.price)
-            return self._repository.add(purchase)
+
+        return self._repository.add(purchase)
 
     def get_all_purchases(self) -> list[Purchase]:
         return self._repository.get_all()
@@ -48,5 +49,5 @@ class PurchaseService:
         timestamp = timestamp.astimezone(timezone.utc)
         return self._repository.delete(timestamp)
  
-
-
+    def _calculate_total_cost(self, purchase: Purchase) -> Decimal:
+        return sum((item.sale_price for item in purchase.items), Decimal("0"))
