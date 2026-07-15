@@ -1,4 +1,9 @@
 ''' Custom Drink Exception Handeling '''
+from numbers import Number
+
+from models.customer import Customer
+
+
 class DuplicateDrinkError(Exception):
     def __init__(self, name: str):
         super().__init__(f"Drink '{name}' already exists.")
@@ -28,6 +33,15 @@ class DuplicateCustomerError(Exception):
 class CustomerNotFoundError(Exception):
     def __init__(self, name: str):
         super().__init__(f"Customer '{name}' was not found.")
+
+def update(self, number: Number, customer: Customer) -> Customer:
+    for i, c in enumerate(self._customers):
+        if c.number == number:
+            self._customers[i] = customer
+            return customer
+
+    raise CustomerNotFoundError(number)
+
 
 ''' Custom BakedGood Exception Handeling '''
 
