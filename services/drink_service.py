@@ -17,7 +17,7 @@ class DrinkService:
         self._validate_drink(drink)
 
         # Calculate sale price
-        drink.sale_price = self._calculate_sale_price(drink.price)
+        drink.sale_price = self._calculate_sale_price(drink)
 
         return self._repository.add(drink)
 
@@ -35,9 +35,9 @@ class DrinkService:
         self._validate_drink(updated)
 
         # Recalculate sale price
-        updated.sale_price = self._calculate_sale_price(updated.price)
+        updated.sale_price = self._calculate_sale_price(updated)
 
-        drink = self._repository.update(name, updated)
+        drink = self._repository.update(updated.id, updated)
         if drink is None:
             raise DrinkNotFoundError(name)
         return drink
@@ -56,21 +56,25 @@ class DrinkService:
         if not drink.ingredients or len(drink.ingredients) == 0:
             raise InvalidDrinkError("Drink must contain at least one ingredient.")
 
-        # Price must be valid
-        if drink.price is None or drink.price <= 0:
-            raise InvalidDrinkError("Drink must have a valid price greater than 0.")
+        # Cost to produce must be valid
+        if drink.cost_to_produce is None or drink.cost_to_produce <= 0:
+            raise InvalidDrinkError("Drink must have a cost to produce greater than 0.")
+
+        # Markup percentage must be valid
+        if drink.markup_percentage is None or drink.markup_percentage < 0:
+            raise InvalidDrinkError("Drink markup percentage cannot be negative.")
 
         # Ingredients must be strings
-        if any(not isinstance(i, str) for i in drink.ingredients):
-            raise InvalidDrinkError("All ingredients must be strings.")
+        # if any(not isinstance(i, Ingredient) for i in drink.ingredients):
+        #     raise InvalidDrinkError("All ingredients must be strings.")
 
     # -------------------------
     # Sale Price Logic
     # -------------------------
 
-    def _calculate_sale_price(self, drink: Drink, price: Decimal) -> Decimal:
+    def _calculate_sale_price(self, drink: Drink) -> Decimal:
         cost_to_produce = drink.cost_to_produce
         markup = drink.markup_percentage
-        sale_price = cost_to_produce + (cost_to_produce * markup )
+        sale_price = cost_to_produce * (1 + markup)
 
         return sale_price.quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)

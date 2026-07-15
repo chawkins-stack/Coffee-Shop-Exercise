@@ -10,5 +10,6 @@ class Drink:
     ingredients: list[Ingredient]
     cost_to_produce: Decimal
     markup_percentage: Decimal
-    sale_price: Decimal
+    sale_price: Optional[Decimal] = None
     id: Optional[Number] = None
+    

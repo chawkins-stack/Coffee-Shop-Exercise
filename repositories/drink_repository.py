@@ -21,9 +21,9 @@ class DrinkRepository:
         self._drinks.append(drink)
         return drink
 
-    def update(self, name: str, drink: Drink) -> Drink | None:
+    def update(self, id: Number, drink: Drink) -> Drink | None:
         for i, d in enumerate(self._drinks):
-            if d.name == name:
+            if d.id == id:
                 self._drinks[i] = drink
                 return drink
         return None
