@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 
 # Import models
+from exceptions import BakedGoodNotFoundError, DrinkNotFoundError
 from models.customer import Customer
 from models.baked_good import BakedGood
 from models.purchase import Purchase
@@ -141,9 +142,27 @@ def create_purchase_ui():
     item_ids = input("Enter item IDs separated by commas: ")
     item_ids = [int(x.strip()) for x in item_ids.split(",")]
 
+    items = []
+    for item_id in item_ids:
+        try:
+            drink = drink_service.get_drink(item_id)
+            items.append(drink)
+            continue
+        except DrinkNotFoundError:
+            pass
+
+        try:
+            baked_good = baked_good_service.get_baked_good(item_id)
+            items.append(baked_good)
+            continue
+        except BakedGoodNotFoundError:
+            pass
+
+        print(f"Item ID {item_id} was not found.")
+
     purchase = Purchase(
         Customer=customer_service.get_by_id(customer_id),
-        items=item_ids,
+        items=items,
         timestamp=datetime.now(timezone.utc)
     )
 
@@ -182,7 +201,7 @@ def view_baked_goods_ui():
 def view_purchases_ui():
     print("\n--- Purchases ---")
     for p in purchase_service.get_all_purchases():
-        print(f"Purchase {p.id} by Customer {p.customer_id} at {p.timestamp}")
+        print(f"Purchase {p.id} by Customer {p.Customer.id} at {p.timestamp}")
     print()
 
 

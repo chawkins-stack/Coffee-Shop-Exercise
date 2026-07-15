@@ -62,8 +62,8 @@ class CustomerService:
             raise DuplicateCustomerError(
                 f"Customer with email '{customer.email}' already exists.")
 
-        customer.lifetime_spend = Decimal(
-            str(customer.lifetime_spend)
+        customer.lifetime_spent = Decimal(
+            str(customer.lifetime_spent)
         ).quantize(
             Decimal("0.01"),
             rounding=ROUND_HALF_EVEN
@@ -76,11 +76,11 @@ class CustomerService:
         if customer is None:
             return None
             
-        if customer.lifetime_spend is None:
-            customer.lifetime_spend = Decimal("0.00")
+        if customer.lifetime_spent is None:
+            customer.lifetime_spent = Decimal("0.00")
 
-        customer.lifetime_spend = (
-            Decimal(str(customer.lifetime_spend))
+        customer.lifetime_spent = (
+            Decimal(str(customer.lifetime_spent))
             + Decimal(str(amount))
         ).quantize(
             Decimal("0.01"),

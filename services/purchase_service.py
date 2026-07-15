@@ -20,9 +20,12 @@ class PurchaseService:
 
         if self._repository.get_by_id(purchase.timestamp) is not None:
             raise DuplicatePurchaseError(f"Purchase with timestamp '{purchase.timestamp}' already exists.")
-        
-        if purchase.customer_email is not None:
-            self._customer_service.add_to_lifetime_spending(purchase.customer_email, purchase.baked_good.price)
+
+        if purchase.Customer is not None:
+            self._customer_service.add_to_lifetime_spent(
+                purchase.Customer.email,
+                purchase.total_cost,
+            )
 
         return self._repository.add(purchase)
 

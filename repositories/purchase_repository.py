@@ -20,7 +20,8 @@ class PurchaseRepository:
     def add(self, purchase: Purchase) -> Purchase:
         purchase.id = self._next_id
         self._next_id += 1
-        purchase.timestamp = purchase.timestamp.astimezone(datetime.timezone.utc)
+        purchase.timestamp = purchase.timestamp.astimezone(timezone.utc)
+
         self._purchases.append(purchase)
         return purchase
 
