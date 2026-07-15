@@ -48,8 +48,8 @@ class BakedGoodService:
         self._repository.delete(name)
 
     def _calculate_sales_price(self, baked_good: BakedGood) -> Decimal:
-        cost_to_produce = baked_good.purchasing_cost
+        purchasing_cost = baked_good.purchasing_cost
         markup = baked_good.marking_percentage
-        sales_price = cost_to_produce * (1 + markup)
+        sales_price = purchasing_cost * (1 + markup)
 
         return sales_price.quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)
