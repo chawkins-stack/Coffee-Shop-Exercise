@@ -74,10 +74,22 @@ def create_drink_ui():
 
 def create_baked_good_ui():
     print("\n--- Create Baked Good ---")
-    name = input("Item name: ")
-    price = Decimal(input("Price: "))
 
-    baked_good = BakedGood(name=name, price=price)
+    name = input("Item name: ")
+    purchasing_cost = Decimal(input("Cost to purchase: "))
+    markup_percentage = Decimal(input("Markup percentage (e.g., 0.25 for 25%): "))
+    vendor_name = input("Vendor name: ")
+
+    raw_allergens = input("List allergens (comma-separated): ")
+    allergens = [ a.strip() for a in raw_allergens.split(",") if a.strip()]
+
+    baked_good = BakedGood(
+        name=name,
+        purchasing_cost=purchasing_cost,
+        marking_percentage=markup_percentage,
+        vendor_name=vendor_name,
+        allergens=allergens
+    )
     baked_good_service.create_baked_good(baked_good)
 
     print(f"Baked good '{name}' created.\n")
@@ -163,7 +175,7 @@ def view_ingredients_ui():
 def view_baked_goods_ui():
     print("\n--- Baked Goods ---")
     for b in baked_good_service.get_all_baked_goods():
-        print(f"{b.id}: {b.name} - ${b.price}")
+        print(f"{b.id}: {b.name} - ${b.sale_price}")
     print()
 
 

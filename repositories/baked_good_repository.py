@@ -5,9 +5,10 @@ from numbers import Number
 class BakedGoodRepository:
     def __init__(self):
         self._baked_goods: list[BakedGood] = []
+        self._next_id = 1
 
     def get_all(self) -> list[BakedGood]:
-        self.next_id = 1
+        return self._baked_goods
 
     def get_by_name(self, name: str) -> BakedGood | None:
         return next((baked_good for baked_good in self._baked_goods if baked_good.name == name), None)
@@ -16,8 +17,8 @@ class BakedGoodRepository:
         return next((baked_good for baked_good in self._baked_goods if baked_good.id == id), None)
 
     def add(self, baked_good: BakedGood) -> BakedGood:
-        baked_good.id = self.next_id
-        self.next_id += 1
+        baked_good.id = self._next_id
+        self._next_id += 1
         self._baked_goods.append(baked_good)
         return baked_good
     

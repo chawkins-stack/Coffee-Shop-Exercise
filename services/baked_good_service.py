@@ -14,7 +14,7 @@ class BakedGoodService:
     def create_baked_good(self, baked_good: BakedGood) -> BakedGood:
         if self._repository.get_by_id(baked_good.id) is not None:
             raise DuplicateBakedGoodError(f"Baked good '{baked_good.name}' already exists.")
-        baked_good.sales_price = self._calculate_sales_price(baked_good.sales_price)
+        baked_good.sale_price = self._calculate_sales_price(baked_good)
         return self._repository.add(baked_good)
 
     def get_baked_good(self, id: Number) -> BakedGood:
