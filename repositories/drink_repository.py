@@ -32,8 +32,8 @@ class DrinkRepository:
                 return drink
         return None
 
-    def delete(self, name: str) -> bool:
-        drink = self.get_by_id(name)
+    def delete(self, id: Number) -> bool:
+        drink = self.get_by_id(id)
         if drink:
             self._drinks.remove(drink)
             return True

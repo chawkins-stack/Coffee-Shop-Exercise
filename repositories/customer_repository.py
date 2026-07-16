@@ -28,8 +28,10 @@ class CustomerRepository:
     def update(self, id: Number, customer: Customer) -> Customer | None:
         for i, existing_customer in enumerate(self._customers):
             if existing_customer.id == id:
+                customer.id = id  # Ensure the ID remains the same
                 self._customers[i] = customer
-                return customer
+                return customer 
+            return None
 
     def delete(self, id: Number) -> bool:
         customer = self.get_by_id(id)
