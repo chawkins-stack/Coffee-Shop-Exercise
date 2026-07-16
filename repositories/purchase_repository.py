@@ -33,13 +33,11 @@ class PurchaseRepository:
         self._purchases.append(purchase)
         return purchase
 
-    def update(self, id: Number, purchase: Purchase) -> Purchase | None:
-        for i, existing_purchase in enumerate(self._purchases):
+    def update (self, id: Number, purchase: Purchase) -> Purchase | None:
+        for index, existing_purchase in enumerate(self._purchases):
             if existing_purchase.id == id:
-                purchase.id = id
-                self._purchases[i] = purchase
+                self._purchases[index] = purchase
                 return purchase
-
         return None
 
     def delete(self, id: Number) -> bool:

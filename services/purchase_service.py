@@ -2,10 +2,9 @@ from models.purchase import Purchase
 from models.drink import Drink
 from models.baked_good import BakedGood
 
-from repositories import purchase
 from repositories.purchase_repository import PurchaseRepository
 from services.customer_service import CustomerService
-from exceptions import DuplicatePurchaseError, PurchaseNotFoundError
+from exceptions import DrinkNotFoundError, DuplicatePurchaseError, PurchaseNotFoundError
 from datetime import datetime, timezone
 from decimal import Decimal, ROUND_HALF_EVEN
 
@@ -44,13 +43,16 @@ class PurchaseService:
         
         return purchase
 
-    def update_purchase(self, timestamp: purchase.timestamp, purchase: Purchase) -> Purchase:
-        purchase.timestamp = purchase.timestamp.astimezone(timezone.utc)
+    def update_purchase(self, updated: Purchase) -> Purchase:  
+        self.validate_purchase(updated)
 
-        purchase = self._repository.update(timestamp.astimezone(timezone.utc), purchase)
+        updated.sale_price = self._calculate_sale_price(updated)
+
+        purchase = self._repository.update(updated.id, updated)
         if purchase is None:
-            raise PurchaseNotFoundError(f"Purchase with timestamp '{timestamp}' was not found.")
+            raise PurchaseNotFoundError(f"Purchase with timestamp '{updated.timestamp}' was not found.")
         return purchase
+
 
     def delete_purchase(self, timestamp: datetime) -> bool:
         timestamp = timestamp.astimezone(timezone.utc)
