@@ -37,7 +37,7 @@ class IngredientService:
         return self._repository.add(ingredient)
     
     def update_ingredient(self, ingredient: Ingredient) -> Ingredient:
-        return self._repository.update(ingredient)
+        return self._repository.update(ingredient.id, ingredient)
     
     def delete_ingredient(self, name: str) -> None:
         self._repository.delete(name)

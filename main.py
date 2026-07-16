@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 
 # Import models
-from exceptions import BakedGoodNotFoundError, CustomerNotFoundError, DrinkNotFoundError, DuplicateBakedGoodError, DuplicateCustomerError, DuplicateDrinkError, DuplicateIngredientError, DuplicatePurchaseError, InvalidBakedGoodError, InvalidDrinkError
+from exceptions import BakedGoodNotFoundError, CustomerNotFoundError, DrinkNotFoundError, DuplicateBakedGoodError, DuplicateCustomerError, DuplicateDrinkError, DuplicateIngredientError, DuplicatePurchaseError, IngredientNotFoundError, InvalidBakedGoodError, InvalidDrinkError, PurchaseNotFoundError
 from models.customer import Customer
 from models.baked_good import BakedGood
 from models.purchase import Purchase
@@ -81,6 +81,28 @@ def update_customer_ui():
     customer_service.update_customer(customer)
     print("Customer updated.\n")
 
+def delete_customer_ui():
+    print("\n--- Delete Customer ---")
+
+    customers = customer_service.get_all_customers()
+    for c in customers:
+        print(f"{c.id}. {c.name} - {c.email}")
+
+    try:
+        customer_id = int(input("Enter customer ID to delete: "))
+        customer = customer_service.get_by_id(customer_id)
+    except CustomerNotFoundError as e:
+        print(e)
+        return
+
+    confirm = input(f"Delete customer '{customer.name}'? (y/n): ").strip().lower()
+    if confirm != "y":
+        print("Cancelled.\n")
+        return
+
+    customer_service.delete_customer(customer_id)
+    print("Customer deleted.\n")
+
 def create_drink_ui():
     print("\n--- Create Drink ---")
 
@@ -143,6 +165,28 @@ def update_drink_ui():
     except DuplicateDrinkError as e:
         print(e)
 
+def delete_drink_ui():
+    print("\n--- Delete Drink ---")
+
+    drinks = drink_service.get_all_drinks()
+    for d in drinks:
+        print(f"{d.id}. {d.name} - ${d.sale_price}")
+
+    try:
+        drink_id = int(input("Enter drink ID to delete: "))
+        drink = drink_service.get_drink(drink_id)
+    except DrinkNotFoundError as e:
+        print(e)
+        return
+
+    confirm = input(f"Delete drink '{drink.name}'? (y/n): ").strip().lower()
+    if confirm != "y":
+        print("Cancelled.\n")
+        return
+
+    drink_service.delete_drink(drink_id)
+    print("Drink deleted.\n")
+
 def create_baked_good_ui():
     print("\n--- Create Baked Good ---")
 
@@ -204,6 +248,28 @@ def update_baked_good_ui():
     except DuplicateBakedGoodError as e:
         print(e)
 
+def delete_baked_good_ui():
+    print("\n--- Delete Baked Good ---")
+
+    baked_goods = baked_good_service.get_all_baked_goods()
+    for b in baked_goods:
+        print(f"{b.id}. {b.name} - ${b.sale_price}")
+
+    try:
+        bg_id = int(input("Enter baked good ID to delete: "))
+        baked_good = baked_good_service.get_baked_good(bg_id)
+    except BakedGoodNotFoundError as e:
+        print(e)
+        return
+
+    confirm = input(f"Delete baked good '{baked_good.name}'? (y/n): ").strip().lower()
+    if confirm != "y":
+        print("Cancelled.\n")
+        return
+
+    baked_good_service.delete_baked_good(bg_id)
+    print("Baked good deleted.\n")
+
 def add_ingredient_ui():
     print("\n--- Add Ingredient ---")
 
@@ -231,6 +297,54 @@ def add_ingredient_ui():
 
     except Exception as e:
         print(f"Unexpected error: {e}\n")
+
+def delete_ingredient_ui():
+    print("\n--- Delete Ingredient ---")
+
+    ingredients = ingredient_service.get_all_ingredients()
+    for i in ingredients:
+        print(f"{i.id}. {i.name} - {i.unit_amount}{i.unit_of_measure} @ ${i.purchasing_cost}")
+
+    try:
+        ing_id = int(input("Enter ingredient ID to delete: "))
+        ingredient = ingredient_service.get_by_id(ing_id)
+    except IngredientNotFoundError as e:
+        print(e)
+        return
+
+    confirm = input(f"Delete ingredient '{ingredient.name}'? (y/n): ").strip().lower()
+    if confirm != "y":
+        print("Cancelled.\n")
+        return
+
+    ingredient_service.delete_ingredient(ing_id)
+    print("Ingredient deleted.\n")
+
+def update_ingredient_ui():
+    print("\n--- Update Ingredient ---")
+
+    ingredients = ingredient_service.get_all_ingredients()
+    for i in ingredients:
+        print(f"{i.id}. {i.name} - {i.unit_amount}{i.unit_of_measure} @ ${i.purchasing_cost}")
+
+    try:
+        ing_id = int(input("Enter ingredient ID: "))
+        ingredient = ingredient_service.get_by_id(ing_id)
+    except IngredientNotFoundError as e:
+        print(e)
+        return
+
+    print("Leave fields blank to keep current values.")
+
+    new_name = input(f"New name ({ingredient.name}): ").strip() or ingredient.name
+    new_cost = input(f"New cost ({ingredient.purchasing_cost}): ").strip()
+    new_cost = Decimal(new_cost) if new_cost else ingredient.purchasing_cost
+
+    ingredient.name = new_name
+    ingredient.purchasing_cost = new_cost
+
+    ingredient_service.update_ingredient(ingredient)
+    print("Ingredient updated.\n")
 
 def create_purchase_ui():
     print("\n--- Create Purchase ---")
@@ -289,6 +403,59 @@ def create_purchase_ui():
     except Exception as e:
         print(f"Unexpected error: {e}\n")
 
+def update_purchase_ui():
+    print("\n--- Update Purchase ---")
+
+    purchases = purchase_service.get_all_purchases()
+    for p in purchases:
+        print(f"{p.id}. {p.Customer.name} - {len(p.items)} items - {p.timestamp}")
+
+    try:
+        purchase_id = int(input("Enter purchase ID: "))
+        purchase = purchase_service.get_purchase(purchase_id)
+    except PurchaseNotFoundError as e:
+        print(e)
+        return
+
+    print("Leave fields blank to keep current values.")
+
+    customers = customer_service.get_all_customers()
+    for c in customers:
+        print(f"{c.id}. {c.name}")
+
+    new_customer_id = input(f"New customer ID ({purchase.Customer.id}): ").strip()
+    if new_customer_id:
+        try:
+            purchase.Customer = customer_service.get_by_id(int(new_customer_id))
+        except CustomerNotFoundError as e:
+            print(e)
+            return
+
+    purchase_service.update_purchase(purchase)
+    print("Purchase updated.\n")
+
+def delete_purchase_ui():
+    print("\n--- Delete Purchase ---")
+
+    purchases = purchase_service.get_all_purchases()
+    for p in purchases:
+        print(f"{p.id}. {p.Customer.name} - {len(p.items)} items - {p.timestamp}")
+
+    try:
+        purchase_id = int(input("Enter purchase ID to delete: "))
+        purchase = purchase_service.get_purchase(purchase_id)
+    except PurchaseNotFoundError as e:
+        print(e)
+        return
+
+    confirm = input(f"Delete purchase #{purchase.id}? (y/n): ").strip().lower()
+    if confirm != "y":
+        print("Cancelled.\n")
+        return
+
+    purchase_service.delete_purchase(purchase_id)
+    print("Purchase deleted.\n")
+
 def view_customers_ui():
     print("\n--- Customers ---")
     for c in customer_service.get_all_customers():
@@ -329,6 +496,7 @@ def customer_menu():
         print("1. Create Customer")
         print("2. View Customers")
         print("3. Update Customer")
+        print("4. Delete Customer")
         print("0. Back")
 
         choice = input("Choose an option: ").strip()
@@ -339,6 +507,8 @@ def customer_menu():
             view_customers_ui()
         elif choice == "3":
             update_customer_ui()
+        elif choice == "4":
+            delete_customer_ui()
         elif choice == "0":
             break
         else:
@@ -350,6 +520,7 @@ def drink_menu():
         print("1. Create Drink")
         print("2. View Drinks")
         print("3. Update Drink")
+        print("4. Delete Drink")
         print("0. Back")
 
         choice = input("Choose an option: ").strip()
@@ -360,6 +531,8 @@ def drink_menu():
             view_drinks_ui()
         elif choice == "3":
             update_drink_ui()
+        elif choice == "4":
+            delete_drink_ui()
         elif choice == "0":
             break
         else:
@@ -372,6 +545,7 @@ def baked_good_menu():
         print("1. Create Baked Good")
         print("2. View Baked Goods")
         print("3. Update Baked Good")
+        print("4. Delete Baked Good")
         print("0. Back")
 
         choice = input("Choose an option: ").strip()
@@ -382,11 +556,12 @@ def baked_good_menu():
             view_baked_goods_ui()
         elif choice == "3":
             update_baked_good_ui()
+        elif choice == "4":
+            delete_baked_good_ui()
         elif choice == "0":
             break
         else:
             print("Invalid option.")
-
 
 def ingredient_menu():
     while True:
@@ -394,6 +569,7 @@ def ingredient_menu():
         print("1. Add Ingredient")
         print("2. View Ingredients")
         print("3. Update Ingredient")
+        print("4. Delete Ingredient")
         print("0. Back")
 
         choice = input("Choose an option: ").strip()
@@ -404,6 +580,8 @@ def ingredient_menu():
             view_ingredients_ui()
         elif choice == "3":
             update_ingredient_ui()
+        elif choice == "4":
+            delete_ingredient_ui()
         elif choice == "0":
             break
         else:
@@ -416,6 +594,7 @@ def purchase_menu():
         print("1. Create Purchase")
         print("2. View Purchases")
         print("3. Update Purchase")
+        print("4. Delete Purchase")
         print("0. Back")
 
         choice = input("Choose an option: ").strip()
@@ -426,6 +605,8 @@ def purchase_menu():
             view_purchases_ui()
         elif choice == "3":
             update_purchase_ui()
+        elif choice == "4":
+            delete_purchase_ui()
         elif choice == "0":
             break
         else:

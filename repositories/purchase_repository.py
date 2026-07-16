@@ -1,7 +1,8 @@
-from datetime import datetime
-from numbers import Number
-from models.purchase import Purchase
 from datetime import datetime, timezone
+from numbers import Number
+
+from models.purchase import Purchase
+
 
 class PurchaseRepository:
     def __init__(self):
@@ -9,13 +10,20 @@ class PurchaseRepository:
         self._next_id = 7001
 
     def get_all(self) -> list[Purchase]:
-        return self._purchases 
+        return self._purchases
 
     def get_by_date(self, date: datetime) -> list[Purchase]:
-        return [purchase for purchase in self._purchases if purchase.timestamp.date() == date.date()]
+        return [
+            purchase
+            for purchase in self._purchases
+            if purchase.timestamp.date() == date.date()
+        ]
 
-    def get_by_id(self, timestamp: datetime) -> Purchase | None:
-        return next((purchase for purchase in self._purchases if purchase.timestamp == timestamp), None)
+    def get_by_id(self, id: Number) -> Purchase | None:
+        return next(
+            (purchase for purchase in self._purchases if purchase.id == id),
+            None
+        )
 
     def add(self, purchase: Purchase) -> Purchase:
         purchase.id = self._next_id
@@ -32,9 +40,11 @@ class PurchaseRepository:
                 return purchase
         return None
 
-    def delete(self, timestamp: datetime) -> bool:
-        purchase = self.get_by_id(timestamp)
+    def delete(self, id: Number) -> bool:
+        purchase = self.get_by_id(id)
+
         if purchase:
             self._purchases.remove(purchase)
             return True
+
         return False

@@ -56,6 +56,7 @@ class PurchaseService:
     def get_purchase_by_id(self, id: int) -> Purchase | None:
         return self._repository.get_by_id(id)
 
+
     def delete_purchase(self, timestamp: datetime) -> bool:
         timestamp = timestamp.astimezone(timezone.utc)
         return self._repository.delete(timestamp)
