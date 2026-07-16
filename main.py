@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 
 # Import models
-from exceptions import BakedGoodNotFoundError, DrinkNotFoundError, DuplicateBakedGoodError, DuplicateCustomerError, DuplicateDrinkError, DuplicateIngredientError, DuplicatePurchaseError, InvalidDrinkError
+from exceptions import BakedGoodNotFoundError, DrinkNotFoundError, DuplicateBakedGoodError, DuplicateCustomerError, DuplicateDrinkError, DuplicateIngredientError, DuplicatePurchaseError, InvalidBakedGoodError, InvalidDrinkError
 from models.customer import Customer
 from models.baked_good import BakedGood
 from models.purchase import Purchase
@@ -115,7 +115,7 @@ def create_baked_good_ui():
     except DuplicateBakedGoodError as e:
         print(e)
 
-    except BakedGoodInvalidError as e:
+    except InvalidBakedGoodError as e:
         print(e)
 
     except Exception as e:
@@ -195,7 +195,9 @@ def create_purchase_ui():
             timestamp=datetime.now(timezone.utc)
         )
 
-        purchase_service.create_purchase(purchase)
+        created = purchase_service.create_purchase(purchase)
+        receipt = purchase_service.format_receipt(created)
+        print(receipt)
         print("Purchase created.\n")
 
     except DuplicatePurchaseError as e:

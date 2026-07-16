@@ -53,4 +53,38 @@ class PurchaseService:
         return self._repository.delete(timestamp)
  
     def _calculate_total_cost(self, purchase: Purchase) -> Decimal:
-        return sum((item.sale_price for item in purchase.items), Decimal("0"))
+        drinks_total = Decimal("0")
+        baked_goods_total = Decimal("0")
+
+        for item in purchase.items:
+            if isinstance(item, Drink):
+                drinks_total += item.sale_price
+            elif isinstance(item, BakedGood):
+                baked_goods_total += item.sale_price
+
+        return drinks_total + baked_goods_total
+
+    def format_receipt(self, purchase: Purchase) -> str:
+        lines = []
+        lines.append("====================================")
+        lines.append("            PURCHASE RECEIPT        ")
+        lines.append("====================================")
+        lines.append(f"Purchase ID: {purchase.id}")
+        lines.append(f"Customer: {purchase.Customer.name}")
+        lines.append(f"Timestamp: {purchase.timestamp.isoformat()}")
+        lines.append("------------------------------------")
+        lines.append("Items:")
+
+        total = Decimal("0")
+
+        for item in purchase.items:
+            item_type = item.__class__.__name__
+            price = item.sale_price
+            total += price
+            lines.append(f"  {item_type:<12} {item.name:<20} ${price}")
+
+        lines.append("------------------------------------")
+        lines.append(f"TOTAL: ${total}")
+        lines.append("====================================")
+
+        return "\n".join(lines)
