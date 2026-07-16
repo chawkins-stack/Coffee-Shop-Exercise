@@ -2,7 +2,6 @@ from models.purchase import Purchase
 from models.drink import Drink
 from models.baked_good import BakedGood
 
-from repositories import purchase
 from repositories.purchase_repository import PurchaseRepository
 from services.customer_service import CustomerService
 from exceptions import DuplicatePurchaseError, PurchaseNotFoundError
