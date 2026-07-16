@@ -1,4 +1,6 @@
 # repositories/ingredients_repository.py
+from numbers import Number
+
 from models.ingredients import Ingredient
 
 
@@ -10,8 +12,8 @@ class IngredientRepository:
     def get_all(self) -> list[Ingredient]:
         return self._ingredients
 
-    def get_by_id(self, name: str) -> Ingredient | None:
-        return next((ingredient for ingredient in self._ingredients if ingredient.name == name), None)
+    def get_by_id(self, id: Number) -> Ingredient | None:
+        return next((ingredient for ingredient in self._ingredients if ingredient.id == id), None)
 
     def get_by_name(self, name: str) -> Ingredient | None:
         return next((ingredient for ingredient in self._ingredients if ingredient.name == name), None)
