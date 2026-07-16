@@ -52,6 +52,9 @@ class PurchaseService:
         if purchase is None:
             raise PurchaseNotFoundError(f"Purchase with timestamp '{updated.timestamp}' was not found.")
         return purchase
+    
+    def get_purchase_by_id(self, id: int) -> Purchase | None:
+        return self._repository.get_by_id(id)
 
 
     def delete_purchase(self, timestamp: datetime) -> bool:
