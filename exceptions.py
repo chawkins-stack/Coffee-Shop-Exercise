@@ -53,5 +53,3 @@ class DuplicatePurchaseError(Exception):
 class PurchaseNotFoundError(Exception):
     def __init__(self, timestamp: str):
         super().__init__(f"Purchase with timestamp '{timestamp}' was not found.")
-        
-    

@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 
 # Import models
-from exceptions import BakedGoodNotFoundError, DrinkNotFoundError
+from exceptions import BakedGoodNotFoundError, DrinkNotFoundError, DuplicateBakedGoodError, DuplicateDrinkError, DuplicateIngredientError, DuplicatePurchaseError, InvalidDrinkError
 from models.customer import Customer
 from models.baked_good import BakedGood
 from models.purchase import Purchase
@@ -51,124 +51,151 @@ def create_customer_ui():
 
 def create_drink_ui():
     print("\n--- Create Drink ---")
-    name = input("Drink name: ")
-    raw_ingredients = input("List ingredients (comma-separated): ")
-    ingredients = [
-        Ingredient(name=i.strip(), purchasing_cost=0, unit_amount=0, unit_of_measure=0)
-        for i in raw_ingredients.split(",") if i.strip()
-    ]
 
-    cost_to_produce = Decimal(input("Cost to produce: "))
-    markup_percentage = Decimal(input("Markup percentage (e.g., 0.25 for 25%): "))
+    try:
+        name = input("Drink name: ")
+        raw_ingredients = input("List ingredients (comma-separated): ")
+        ingredients = [
+            Ingredient(name=i.strip(), purchasing_cost=0, unit_amount=0, unit_of_measure=0)
+            for i in raw_ingredients.split(",") if i.strip()
+        ]
 
-    drink = Drink(
-        name=name,
-        ingredients=ingredients,
-        cost_to_produce=cost_to_produce,
-        markup_percentage=markup_percentage
-    )
+        cost_to_produce = Decimal(input("Cost to produce: "))
+        markup_percentage = Decimal(input("Markup percentage (e.g., 0.25 for 25%): "))
 
-    drink_service.create_drink(drink)
+        drink = Drink(
+            name=name,
+            ingredients=ingredients,
+            cost_to_produce=cost_to_produce,
+            markup_percentage=markup_percentage
+        )
 
-    print(f"Drink '{name}' created.\n")
+        drink_service.create_drink(drink)
+        print(f"Drink '{name}' created.\n")
 
+    except DuplicateDrinkError as e:
+        print(e)
+
+    except InvalidDrinkError as e:
+        print(e)
+
+    except Exception as e:
+        print(f"Unexpected error: {e}\n")
 
 def create_baked_good_ui():
     print("\n--- Create Baked Good ---")
 
-    name = input("Item name: ")
-    purchasing_cost = Decimal(input("Cost to purchase: "))
-    markup_percentage = Decimal(input("Markup percentage (e.g., 0.25 for 25%): "))
-    vendor_name = input("Vendor name: ")
+    try:
+        name = input("Item name: ")
+        purchasing_cost = Decimal(input("Cost to purchase: "))
+        markup_percentage = Decimal(input("Markup percentage (e.g., 0.25 for 25%): "))
+        vendor_name = input("Vendor name: ")
 
-    raw_allergens = input("List allergens (comma-separated): ")
-    allergens = [ a.strip() for a in raw_allergens.split(",") if a.strip()]
+        raw_allergens = input("List allergens (comma-separated): ")
+        allergens = [a.strip() for a in raw_allergens.split(",") if a.strip()]
 
-    baked_good = BakedGood(
-        name=name,
-        purchasing_cost=purchasing_cost,
-        marking_percentage=markup_percentage,
-        vendor_name=vendor_name,
-        allergens=allergens
-    )
-    baked_good_service.create_baked_good(baked_good)
+        baked_good = BakedGood(
+            name=name,
+            purchasing_cost=purchasing_cost,
+            marking_percentage=markup_percentage,
+            vendor_name=vendor_name,
+            allergens=allergens
+        )
 
-    print(f"Baked good '{name}' created.\n")
+        baked_good_service.create_baked_good(baked_good)
+        print(f"Baked good '{name}' created.\n")
 
+    except DuplicateBakedGoodError as e:
+        print(e)
+
+    except InvalidDrinkError as e:
+        print(e)
+
+    except Exception as e:
+        print(f"Unexpected error: {e}\n")
 
 def add_ingredient_ui():
     print("\n--- Add Ingredient ---")
-    name = input("Ingredient name: ")
 
-    purchase_cost = Decimal(input("Purchase Cost: "))
-    unit_amount = Decimal(input("Unit amount (e.g., 1.5): "))
-    unit_of_measure = input("Unit of measure (e.g., kg, ml, oz): ")
+    try:
+        name = input("Ingredient name: ")
+        purchase_cost = Decimal(input("Purchase Cost: "))
+        unit_amount = Decimal(input("Unit amount (e.g., 1.5): "))
+        unit_of_measure = input("Unit of measure (e.g., kg, ml, oz): ")
 
-    ingredient = Ingredient(
-        name=name,
-        purchasing_cost=purchase_cost,
-        unit_amount=unit_amount,
-        unit_of_measure=unit_of_measure
-    )
+        ingredient = Ingredient(
+            name=name,
+            purchasing_cost=purchase_cost,
+            unit_amount=unit_amount,
+            unit_of_measure=unit_of_measure
+        )
 
-    ingredient_service.create_ingredient(ingredient)
+        ingredient_service.create_ingredient(ingredient)
+        print(f"Ingredient '{name}' added.\n")
 
-    print(f"Ingredient '{name}' added.\n")
+    except DuplicateIngredientError as e:
+        print(e)
 
+    except InvalidDrinkError as e:
+        print(e)
+
+    except Exception as e:
+        print(f"Unexpected error: {e}\n")
 
 def create_purchase_ui():
     print("\n--- Create Purchase ---")
 
-    # Select customer
-    customers = customer_service.get_all_customers()
-    print("Customers:")
-    for c in customers:
-        print(f"{c.id}. {c.name}")
+    try:
+        customers = customer_service.get_all_customers()
+        print("Customers:")
+        for c in customers:
+            print(f"{c.id}. {c.name}")
 
-    customer_id = int(input("Choose customer ID: "))
-    customer = customer_service.get_by_id(customer_id)
+        customer_id = int(input("Choose customer ID: "))
+        customer = customer_service.get_by_id(customer_id)
 
-    # Select items
-    print("\nDrinks:")
-    drinks = drink_service.get_all_drinks()
-    for d in drinks:
-        print(f"{d.id}. {d.name} - ${d.sale_price}")
+        print("\nDrinks:")
+        drinks = drink_service.get_all_drinks()
+        for d in drinks:
+            print(f"{d.id}. {d.name} - ${d.sale_price}")
 
-    print("\nBaked Goods:")
-    baked_goods = baked_good_service.get_all_baked_goods()
-    for b in baked_goods:
-        print(f"{b.id}. {b.name} - ${b.sale_price}")
+        print("\nBaked Goods:")
+        baked_goods = baked_good_service.get_all_baked_goods()
+        for b in baked_goods:
+            print(f"{b.id}. {b.name} - ${b.sale_price}")
 
-    item_ids = input("Enter item IDs separated by commas: ")
-    item_ids = [int(x.strip()) for x in item_ids.split(",")]
+        item_ids = [int(x.strip()) for x in input("Enter item IDs separated by commas: ").split(",")]
 
-    items = []
-    for item_id in item_ids:
-        try:
-            drink = drink_service.get_drink(item_id)
-            items.append(drink)
-            continue
-        except DrinkNotFoundError:
-            pass
+        items = []
+        for item_id in item_ids:
+            try:
+                items.append(drink_service.get_drink(item_id))
+                continue
+            except DrinkNotFoundError:
+                pass
 
-        try:
-            baked_good = baked_good_service.get_baked_good(item_id)
-            items.append(baked_good)
-            continue
-        except BakedGoodNotFoundError:
-            pass
+            try:
+                items.append(baked_good_service.get_baked_good(item_id))
+                continue
+            except BakedGoodNotFoundError:
+                pass
 
-        print(f"Item ID {item_id} was not found.")
+            print(f"Item ID {item_id} was not found.")
 
-    purchase = Purchase(
-        Customer=customer_service.get_by_id(customer_id),
-        items=items,
-        timestamp=datetime.now(timezone.utc)
-    )
+        purchase = Purchase(
+            Customer=customer,
+            items=items,
+            timestamp=datetime.now(timezone.utc)
+        )
 
-    purchase_service.create_purchase(purchase)
-    print("Purchase created.\n")
+        purchase_service.create_purchase(purchase)
+        print("Purchase created.\n")
 
+    except DuplicatePurchaseError as e:
+        print(e)
+
+    except Exception as e:
+        print(f"Unexpected error: {e}\n")
 
 def view_customers_ui():
     print("\n--- Customers ---")
