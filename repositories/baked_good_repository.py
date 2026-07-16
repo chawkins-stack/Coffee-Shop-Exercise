@@ -23,12 +23,10 @@ class BakedGoodRepository:
         return baked_good
     
     def update(self, id: Number, baked_good: BakedGood) -> BakedGood | None:
-        for index, existing_baked_good in enumerate(self._baked_goods):
-            if existing_baked_good.id == id:
+        for index,in baked_good in enumerate(self._baked_goods):
+            if baked_good.id == id:
                 self._baked_goods[index] = baked_good
                 return baked_good
-            
-        return None
 
 
     def delete(self, id: Number) -> bool:
