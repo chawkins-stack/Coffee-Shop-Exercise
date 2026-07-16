@@ -19,7 +19,7 @@ def test_get_by_name_is_d_08():
     assert drink_dataset().get_by_name("Iced Americano") is d_08
 
 def test_get_by_name_nonexistent_drink():
-    assert drink_dataset().get_by_name(9797) is None
+    assert drink_dataset().get_by_name("Pistachio Rose Latte") is None
 
 def test_add_drink():
     d_10 = Drink(
@@ -55,3 +55,9 @@ def test_update_nonexistent_drink():
     )
     data = drink_dataset()
     assert data.update(9901, d_12) is None
+
+def test_delete_existing_drink():
+    assert drink_dataset().delete(1304)
+
+def test_delete_nonexistent_drink():
+    assert drink_dataset().delete(9909) is False
