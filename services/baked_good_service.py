@@ -55,10 +55,10 @@ class BakedGoodService:
     def update_baked_good(self, baked_good: BakedGood) -> BakedGood:
        baked_good.sales_price = self._calculate_sales_price(baked_good)
        
-       baked_good = self._repository.update(baked_good.id, baked_good)
-       if baked_good is None:
-            raise BakedGoodNotFoundError(name)
-       return baked_good
+       updated_baked_good = self._repository.update(baked_good.id, baked_good)
+       if updated_baked_good is None:
+            raise BakedGoodNotFoundError(f"Baked good with ID '{baked_good.id}' was not found.")
+       return updated_baked_good
 
     def delete_baked_good(self, name: str) -> None:
         self._repository.delete(name)
