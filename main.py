@@ -118,7 +118,6 @@ def update_drink_ui():
     except DuplicateDrinkError as e:
         print(e)
 
-
 def create_baked_good_ui():
     print("\n--- Create Baked Good ---")
 
@@ -150,6 +149,35 @@ def create_baked_good_ui():
 
     except Exception as e:
         print(f"Unexpected error: {e}\n")
+
+def update_baked_good_ui():
+    print("\n--- Update Baked Good ---")
+
+    baked_goods = baked_good_service.get_all_baked_goods()
+    for b in baked_goods:
+        print(f"{b.id}. {b.name} - ${b.sale_price}")
+
+    try:
+        bg_id = int(input("Enter baked good ID: "))
+        baked_good = baked_good_service.get_baked_good(bg_id)
+    except BakedGoodNotFoundError as e:
+        print(e)
+        return
+
+    print("Leave fields blank to keep current values.")
+
+    new_name = input(f"New name ({baked_good.name}): ").strip() or baked_good.name
+    new_markup = input(f"New markup ({baked_good.marking_percentage}): ").strip()
+    new_markup = Decimal(new_markup) if new_markup else baked_good.marking_percentage
+
+    baked_good.name = new_name
+    baked_good.marking_percentage = new_markup
+
+    try:
+        baked_good_service.update_baked_good(baked_good)
+        print("Baked good updated.\n")
+    except DuplicateBakedGoodError as e:
+        print(e)
 
 def add_ingredient_ui():
     print("\n--- Add Ingredient ---")
