@@ -26,8 +26,8 @@ class CustomerRepository:
         return customer
 
     def update(self, id: Number, customer: Customer) -> Customer | None:
-        for i, customer in enumerate(self._customers):
-            if customer.id == id:
+        for i, existing_customer in enumerate(self._customers):
+            if existing_customer.id == id:
                 self._customers[i] = customer
                 return customer
 

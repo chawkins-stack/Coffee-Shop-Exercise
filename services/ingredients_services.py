@@ -20,6 +20,12 @@ class IngredientService:
     def get_by_name(self, name: str) -> Ingredient:
         return self._repository.get_by_name(name)
 
+    def validate_ingredient(self, ingredient: Ingredient) -> bool:
+        if not ingredient.name or not ingredient.name.strip():
+            raise ValueError("Ingredient name cannot be empty.")
+        if ingredient.cost_to_produce is None or ingredient.cost_to_produce <= 0:
+            raise ValueError("Ingredient cost to produce must be greater than 0.")
+        return True
     
     def add_ingredient(self, ingredient: Ingredient) -> Ingredient:
         return self._repository.add(ingredient)

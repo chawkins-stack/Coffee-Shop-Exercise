@@ -25,9 +25,9 @@ class IngredientRepository:
         self._ingredients.append(ingredient)
         return ingredient
 
-    def update(self, name: str, ingredient: Ingredient) -> Ingredient | None:
+    def update(self, id: Number, ingredient: Ingredient) -> Ingredient | None:
         for i, existing_ingredient in enumerate(self._ingredients):
-            if existing_ingredient.name == name:
+            if existing_ingredient.id == id:
                 self._ingredients[i] = ingredient
                 return ingredient
 
