@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 
 # Import models
-from exceptions import BakedGoodNotFoundError, DrinkNotFoundError, DuplicateBakedGoodError, DuplicateCustomerError, DuplicateDrinkError, DuplicateIngredientError, DuplicatePurchaseError, InvalidBakedGoodError, InvalidDrinkError
+from exceptions import BakedGoodNotFoundError, CustomerNotFoundError, DrinkNotFoundError, DuplicateBakedGoodError, DuplicateCustomerError, DuplicateDrinkError, DuplicateIngredientError, DuplicatePurchaseError, InvalidBakedGoodError, InvalidDrinkError
 from models.customer import Customer
 from models.baked_good import BakedGood
 from models.purchase import Purchase
@@ -55,6 +55,31 @@ def create_customer_ui():
 
     except Exception as e:
         print(f"Unexpected error: {e}\n")
+
+def update_customer_ui():
+    print("\n--- Update Customer ---")
+
+    customers = customer_service.get_all_customers()
+    for c in customers:
+        print(f"{c.id}. {c.name} - {c.email}")
+
+    try:
+        customer_id = int(input("Enter customer ID: "))
+        customer = customer_service.get_by_id(customer_id)
+    except CustomerNotFoundError as e:
+        print(e)
+        return
+
+    print("Leave fields blank to keep current values.")
+
+    new_name = input(f"New name ({customer.name}): ").strip() or customer.name
+    new_email = input(f"New email ({customer.email}): ").strip() or customer.email
+
+    customer.name = new_name
+    customer.email = new_email
+
+    customer_service.update_customer(customer)
+    print("Customer updated.\n")
 
 def create_drink_ui():
     print("\n--- Create Drink ---")
