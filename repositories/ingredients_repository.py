@@ -31,8 +31,8 @@ class IngredientRepository:
                 self._ingredients[i] = ingredient
                 return ingredient
 
-    def delete(self, name: str) -> bool:
-        ingredient = self.get_by_id(name)
+    def delete(self, id: Number) -> bool:
+        ingredient = self.get_by_id(id)
 
         if ingredient:
             self._ingredients.remove(ingredient)

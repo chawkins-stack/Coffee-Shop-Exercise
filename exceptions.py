@@ -61,3 +61,8 @@ class DuplicatePurchaseError(Exception):
 class PurchaseNotFoundError(Exception):
     def __init__(self, timestamp: str):
         super().__init__(f"Purchase with timestamp '{timestamp}' was not found.")
+
+class invalidEmailError(Exception):
+    def __init__(self, email: str):
+        super().__init__(f"Email '{email}' is invalid.")
+        
