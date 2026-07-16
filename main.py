@@ -89,6 +89,36 @@ def create_drink_ui():
     except Exception as e:
         print(f"Unexpected error: {e}\n")
 
+def update_drink_ui():
+    print("\n--- Update Drink ---")
+    drinks = drink_service.get_all_drinks()
+
+    for d in drinks:
+        print(f"{d.id}. {d.name} - ${d.sale_price}")
+
+    try:
+        drink_id = int(input("Enter drink ID to update: "))
+        drink = drink_service.get_drink(drink_id)
+    except DrinkNotFoundError as e:
+        print(e)
+        return
+
+    print("Leave fields blank to keep current values.")
+
+    new_name = input(f"New name ({drink.name}): ").strip() or drink.name
+    new_markup = input(f"New markup ({drink.markup_percentage}): ").strip()
+    new_markup = Decimal(new_markup) if new_markup else drink.markup_percentage
+
+    drink.name = new_name
+    drink.markup_percentage = new_markup
+
+    try:
+        drink_service.update_drink(drink)
+        print("Drink updated.\n")
+    except DuplicateDrinkError as e:
+        print(e)
+
+
 def create_baked_good_ui():
     print("\n--- Create Baked Good ---")
 
@@ -245,8 +275,8 @@ def customer_menu():
         print("\n--- Customer Menu ---")
         print("1. Create Customer")
         print("2. View Customers")
+        print("3. Update Customer")
         print("0. Back")
-        print("-----------------------\n")
 
         choice = input("Choose an option: ").strip()
 
@@ -254,6 +284,8 @@ def customer_menu():
             create_customer_ui()
         elif choice == "2":
             view_customers_ui()
+        elif choice == "3":
+            update_customer_ui()
         elif choice == "0":
             break
         else:
@@ -264,6 +296,7 @@ def drink_menu():
         print("\n--- Drink Menu ---")
         print("1. Create Drink")
         print("2. View Drinks")
+        print("3. Update Drink")
         print("0. Back")
 
         choice = input("Choose an option: ").strip()
@@ -272,16 +305,20 @@ def drink_menu():
             create_drink_ui()
         elif choice == "2":
             view_drinks_ui()
+        elif choice == "3":
+            update_drink_ui()
         elif choice == "0":
             break
         else:
             print("Invalid option.")
+
 
 def baked_good_menu():
     while True:
         print("\n--- Baked Goods Menu ---")
         print("1. Create Baked Good")
         print("2. View Baked Goods")
+        print("3. Update Baked Good")
         print("0. Back")
 
         choice = input("Choose an option: ").strip()
@@ -290,16 +327,20 @@ def baked_good_menu():
             create_baked_good_ui()
         elif choice == "2":
             view_baked_goods_ui()
+        elif choice == "3":
+            update_baked_good_ui()
         elif choice == "0":
             break
         else:
             print("Invalid option.")
+
 
 def ingredient_menu():
     while True:
         print("\n--- Ingredient Menu ---")
         print("1. Add Ingredient")
         print("2. View Ingredients")
+        print("3. Update Ingredient")
         print("0. Back")
 
         choice = input("Choose an option: ").strip()
@@ -308,18 +349,21 @@ def ingredient_menu():
             add_ingredient_ui()
         elif choice == "2":
             view_ingredients_ui()
+        elif choice == "3":
+            update_ingredient_ui()
         elif choice == "0":
             break
         else:
             print("Invalid option.")
+
 
 def purchase_menu():
     while True:
         print("\n--- Purchase Menu ---")
         print("1. Create Purchase")
         print("2. View Purchases")
+        print("3. Update Purchase")
         print("0. Back")
-        print("-----------------------------------")
 
         choice = input("Choose an option: ").strip()
 
@@ -327,11 +371,12 @@ def purchase_menu():
             create_purchase_ui()
         elif choice == "2":
             view_purchases_ui()
+        elif choice == "3":
+            update_purchase_ui()
         elif choice == "0":
             break
         else:
             print("Invalid option.")
-
 
 def seed_demo_data():
     print("\nLoading demo data...")

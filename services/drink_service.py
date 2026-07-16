@@ -31,7 +31,7 @@ class DrinkService:
             raise DrinkNotFoundError(id)
         return drink
 
-    def update_drink(self, name: str, updated: Drink) -> Drink:
+    def update_drink(self, updated: Drink) -> Drink:
         # Validate updated drink
         self._validate_drink(updated)
 
@@ -40,7 +40,7 @@ class DrinkService:
 
         drink = self._repository.update(updated.id, updated)
         if drink is None:
-            raise DrinkNotFoundError(name)
+            raise DrinkNotFoundError(drink.name)
         return drink
 
     def delete_drink(self, name: str) -> bool:
