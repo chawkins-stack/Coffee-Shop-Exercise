@@ -11,7 +11,7 @@ class DrinkService:
 
     def create_drink(self, drink: Drink) -> Drink:
         # Duplicate name check
-        if self._repository.get_by_name(drink.name) is not None:
+        if self._repository.get_by_name(drink.name.lower()) is not None:
             raise DuplicateDrinkError(drink.name)
 
         # Validation

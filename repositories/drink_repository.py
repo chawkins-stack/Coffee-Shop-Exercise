@@ -13,7 +13,11 @@ class DrinkRepository:
         return next((d for d in self._drinks if d.id == id), None)
 
     def get_by_name(self, name: str) -> Drink | None:
-        return next((d for d in self._drinks if d.name == name), None)
+        name = name.lower()
+        for drink in self._drinks:
+            if drink.name.lower() == name:
+                return drink
+        return None
 
     def add(self, drink: Drink) -> Drink:
         drink.id = self._next_id
