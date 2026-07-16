@@ -1,4 +1,5 @@
 from decimal import ROUND_HALF_EVEN, Decimal
+from numbers import Number
 
 from repositories.drink_repository import DrinkRepository
 from models.drink import Drink
@@ -24,10 +25,10 @@ class DrinkService:
     def get_all_drinks(self) -> list[Drink]:
         return self._repository.get_all()
 
-    def get_drink(self, name: str) -> Drink:
-        drink = self._repository.get_by_name(name)
+    def get_drink(self, id: Number) -> Drink:
+        drink = self._repository.get_by_id(id)
         if drink is None:
-            raise DrinkNotFoundError(name)
+            raise DrinkNotFoundError(id)
         return drink
 
     def update_drink(self, name: str, updated: Drink) -> Drink:

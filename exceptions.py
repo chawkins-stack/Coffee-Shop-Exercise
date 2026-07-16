@@ -25,6 +25,10 @@ class IngredientNotFoundError(Exception):
     def __init__(self, name: str):
         super().__init__(f"Ingredient '{name}' was not found.")
 
+class InvalidIngredientError(Exception):
+    def __init__(self, message: str):
+        super().__init__(message)
+
 ''' Custom Customer Exception Handeling '''
 class DuplicateCustomerError(Exception):
     def __init__(self, name: str):
@@ -53,5 +57,3 @@ class DuplicatePurchaseError(Exception):
 class PurchaseNotFoundError(Exception):
     def __init__(self, timestamp: str):
         super().__init__(f"Purchase with timestamp '{timestamp}' was not found.")
-        
-    
